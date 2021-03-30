@@ -93,7 +93,7 @@ class OmiGame {
 
             // put card in player position
             this.table[this.currentPlayer - 1] = card;
-            
+
             this.currentPlayer += 1;
             if (this.currentPlayer > 4) {
                 this.currentPlayer = 1;
@@ -107,7 +107,7 @@ class OmiGame {
 
     callTrump(trump) {
         const trumps = new Set(['S', 'H', 'C', 'D']);
-        
+
         /*if (trump == 'S' || trump == 'H' || trump == 'C' || trump == 'D') {
             this.trump = trump;
             return true;
@@ -150,7 +150,7 @@ class OmiGame {
 
         // +1 due to currentRoundWinner representing array position
         this.currentPlayer = currentRoundWinner + 1;
-        
+
         return currentRoundWinner + 1;
     }
 

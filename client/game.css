@@ -363,6 +363,8 @@ nav{
     color: white;
     border-radius: 20px;
     box-shadow:0 0 16px   rgba(255, 255, 255,0.3);
+    padding: 20px 40px;
+    margin: 10px 0;
     /**/
 }
 .select-trumps{
@@ -491,6 +493,8 @@ nav{
     background-image:url("assets/imgs/diamonds.png");
 }
 /**************************/
+
+.new-game-starting{ display:none;}
 
 @keyframes add-new-dot{
     0%{

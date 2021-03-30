@@ -75,6 +75,8 @@ const opponent1Hand = document.querySelector("#opponent-1-hand");
 const opponent2Hand = document.querySelector("#opponent-2-hand");
 const teammateHand = document.querySelector("#teammate-hand");
 const inviteYourFriends = document.querySelector("#invite-your-friends");
+const matchWinnerElement = document.querySelector('#match-winner');
+const newMatchStarting = document.querySelector("#new-game-starting");
 
 let matchNumber = 1;
 let playerNumber = -1;
@@ -150,6 +152,7 @@ socket.on('played-card', data => {
 
 // your turn to call trumps
 socket.on('call-trump', () => {
+    popupDiv.style.display = 'flex';
     waitingForTrumps.style.display = 'none';
 
     setTimeout(() => {
@@ -179,6 +182,7 @@ socket.on('round-winner', data => {
 // sends the winner of the current match at the end
 socket.on('match-winner', data => {
     console.log(data);
+    startNewMatch(data);
 });
 
 // sends the current scores of the players at the end of the match
@@ -261,21 +265,21 @@ function roundWinner(data) {
     setTimeout(() => {
         if (relativeRoundWinner == 1) {
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateY(${bodyRect.height}px)`;
+                tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(${bodyRect.height}px)`;
             }
         } else if (relativeRoundWinner == 2) {
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateX(${bodyRect.width}px)`;
+                tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(${bodyRect.width}px)`;
             }
-    
+
         } else if (relativeRoundWinner == 3) {
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateY(-${bodyRect.height}px)`;
+                tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(-${bodyRect.height}px)`;
             }
-    
+
         } else if (relativeRoundWinner == 4) {
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateX(-${bodyRect.width}px)`;
+                tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(-${bodyRect.width}px)`;
             }
         }
     }, 2000);
@@ -309,6 +313,9 @@ function playerConnect(data) {
 function startGame() {
     waitingForTrumps.style.display = 'none';
     playerConnectDiv.style.display = 'none';
+    inviteYourFriends.style.display = 'none';
+
+
     document.querySelector("#wating-for-players").style.display = 'none';
     gameDetails.style.display = 'flex';
     gameDetails.innerText = 'Game is starting';
@@ -348,12 +355,7 @@ function playerCardMove(img, card) {
                             rotate(${offSet > 0 ? '-' : ''}180deg)`;
 
     console.log(playerHand);
-    for (let i = 0; i < playerHand.length; i++) {
-        if (card.name == playerHand[i].name) {
-            playerHand.pop(i);
-            break;
-        }
-    }
+    playerHand = playerHand.filter(playerCard => playerCard.name != card.name);
     console.log(playerHand);
 }
 
@@ -479,4 +481,26 @@ function getRelativePlayerNumber(playerNumber, otherPlayer) {
     }
 
     return false;
+}
+
+function startNewMatch(data) {
+    popupDiv.style.display = 'flex';
+    if (data.matchWinner == "Tie Match") {
+        matchWinnerElement.innerHTML = `${data.matchWinner}`;
+
+    } else {
+        matchWinnerElement.innerHTML = `${data.matchWinner} won the match`;
+    }
+
+    setTimeout(() => {
+        matchWinnerElement.style.display = 'none';
+        newMatchStarting.innerHTML = ` Match ${++matchNumber} starting`
+
+        setTimeout(() => {
+            newMatchStarting.style.display = 'none';
+            popupDiv.style.display = 'none';
+        })
+    }, 2000);
+
+
 }
