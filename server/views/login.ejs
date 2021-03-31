@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Admin Login</title>
+</head>
+<body>
+    <div class="main-container">
+        <div class="login-div" id="login">
+            <div class="logo-div">
+                <img class="logo" src="/assets/Group 1 with shadow.png" alt="Logo">
+            </div>
+            <div class="form-header-text">
+                <span class="header-text">Admin Login</span>
+            </div>
+            <form action="/admins/login" method="POST">
+                <div class="input-boxes-div">
+                    <input class="input-boxes" type="text" name="email" id="email" placeholder="E-mail">
+                    <input class="input-boxes" type="text" name="password" id="password" placeholder="Password">
+                </div>
+                <% if(messages.error) { %>
+                    <div>
+                        <%= messages.error %>
+                    </div>
+                <% } %>
+                <div class="form-footer">
+                    <button type="submit" class="form-btn">Login</button>
+                </div>
+            </form>
+        </div>
+        <img class="home-btn" src="/assets/home-button.png" alt="Home">
+    </div>
+</body>
+</html>
