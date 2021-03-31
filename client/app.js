@@ -82,6 +82,8 @@ const gameEndElement = document.querySelector("#game-end");
 const connectionErrorElement = document.querySelector("#connection-error");
 const roomErrorElement = document.querySelector("#room-error");
 const playerDisconnectedElement = document.querySelector("#player-disconnected");
+const otherTeamDots = document.querySelector('#other-team-dots');
+const yourTeamDots = document.querySelector('#your-team-dots');
 
 let matchNumber = 1;
 let playerNumber = -1;
@@ -318,20 +320,30 @@ function roundWinner(data) {
 
     setTimeout(() => {
         if (relativeRoundWinner == 1) {
+            addDot('green');
+
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(${bodyRect.height}px)`;
             }
         } else if (relativeRoundWinner == 2) {
+            addDot('purple');
+
             for (let i = 0; i < 4; i++) {
+
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(${bodyRect.width}px)`;
             }
 
         } else if (relativeRoundWinner == 3) {
+            addDot('green');
+
+
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(-${bodyRect.height}px)`;
             }
 
         } else if (relativeRoundWinner == 4) {
+            addDot('purple');
+
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(-${bodyRect.width}px)`;
             }
@@ -344,6 +356,20 @@ function roundWinner(data) {
     }, 3000);
 
     console.log(tableCards);
+}
+
+function addDot(color) {
+    const dot = document.createElement('div');
+    dot.classList.add(`${color}-dot`);
+    dot.classList.add('dot');
+    dot.classList.add('test-dot');
+
+    if (color = "green") {
+        yourTeamDots.appendChild(dot);
+    } else {
+        otherTeamDots.appendChild(dot);
+    }
+
 }
 
 function playerConnect(data) {
