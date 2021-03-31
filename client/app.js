@@ -3,6 +3,7 @@ const url = new URL(urlString);
 const room = url.searchParams.get('room');
 const scoreLimit = url.searchParams.get('scoreLimit');*/
 
+
 function getToken() {
     const name = 'omi-token' + '=';
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -77,6 +78,10 @@ const teammateHand = document.querySelector("#teammate-hand");
 const inviteYourFriends = document.querySelector("#invite-your-friends");
 const matchWinnerElement = document.querySelector('#match-winner');
 const newMatchStarting = document.querySelector("#new-game-starting");
+const gameEndElement = document.querySelector("#game-end");
+const connectionErrorElement = document.querySelector("#connection-error");
+const roomErrorElement = document.querySelector("#room-error");
+const playerDisconnectedElement = document.querySelector("#player-disconnected");
 
 let matchNumber = 1;
 let playerNumber = -1;
@@ -85,15 +90,19 @@ let matchPlayers = [];
 let firstCard = null;
 let currentPlayer = 1;
 let tableCards = [];
+let isGameEnded = false;
+let roundsCount = 0;
 
 socket.on('connection-error', data => {
     console.log(data);
     window.location = 'login.html';
+    connectionError(data);
 });
 
 // sends any errors that can occur while joining room (room full, already in the room)
 socket.on('room-error', data => {
     console.log(data);
+    roomError(data);
 });
 
 socket.on('new-room', data => {
@@ -113,7 +122,7 @@ socket.on('player-connect', data => {
 
 socket.on('player-disconnect', () => {
     //window.location.replace('http://localhost:5000');
-
+    playerDisconnected();
     console.log('Player disconnected');
 });
 
@@ -182,7 +191,12 @@ socket.on('round-winner', data => {
 // sends the winner of the current match at the end
 socket.on('match-winner', data => {
     console.log(data);
+    roundsCount++;
+    if (roundsCount < 2) {
+        isGameEnded = true;
+    }
     startNewMatch(data);
+
 });
 
 // sends the current scores of the players at the end of the match
@@ -192,7 +206,12 @@ socket.on('match-scores', data => {
 
 socket.on('game-finished', data => {
     console.log(data);
+    isGameEnded = true;
+
+    //game finished eka call wenne startNewMatch() eka call unata passe;
+    gameFinish(data);
 });
+
 
 function createHand(hand) {
     player1Cards.innerHTML = '';
@@ -239,6 +258,7 @@ function validateCard(card) {
 function callTrump(trump) {
     socket.emit('call-trump', trump);
     trumpCallDiv.style.display = 'none';
+    fourRandomCards.style.display = 'none';
     popupDiv.style.display = 'none';
 }
 
@@ -323,6 +343,7 @@ function startGame() {
         gameDetails.style.display = 'none';
         inviteYourFriends.style.display = 'none';
         waitingForTrumps.style.display = 'flex';
+        console.log('startGame');
     }, 2000);
 
     player1Name.innerText = matchPlayers[0].playerName;
@@ -333,6 +354,7 @@ function startGame() {
 
 }
 function showRandomCards() {
+    fourRandomCards.style.display = 'flex';
     fourRandomCards.innerHTML = '';
     for (let i = 0; i < 4; i++) {
         const img = document.createElement('img');
@@ -484,7 +506,12 @@ function getRelativePlayerNumber(playerNumber, otherPlayer) {
 }
 
 function startNewMatch(data) {
+
+    if (isGameEnded == true) return;
+
+
     popupDiv.style.display = 'flex';
+    matchWinnerElement.style.display = 'flex';
     if (data.matchWinner == "Tie Match") {
         matchWinnerElement.innerHTML = `${data.matchWinner}`;
 
@@ -494,13 +521,54 @@ function startNewMatch(data) {
 
     setTimeout(() => {
         matchWinnerElement.style.display = 'none';
+        newMatchStarting.style.display = 'flex';
         newMatchStarting.innerHTML = ` Match ${++matchNumber} starting`
 
         setTimeout(() => {
             newMatchStarting.style.display = 'none';
-            popupDiv.style.display = 'none';
-        })
-    }, 2000);
+            waitingForTrumps.style.display = 'flex';
+            console.log("startNewMatch()");
+        }, 2000);
+    }, 1000);
 
 
+}
+
+function gameFinish(data) {
+    popupDiv.style.display = 'flex';
+    gameEndElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+    if (isTeam(playerNumber, data.gameWinner)) {
+        gameEndElement.innerHTML =
+            `VICTORY <br> You Won <br><a href="lobby.html" class="back-to-lobby-btn">Back to Lobby</a> `;
+    } else {
+        gameEndElement.innerHTML =
+            `GAME OVER <br> You Lose <br><a href="lobby.html" class="back-to-lobby-btn">Back to Lobby</a> `;
+    }
+
+
+}
+
+function getTeam(playerNumber) {
+    if (playerNumber == 1 || playerNumber == 3) {
+        return 1;
+    } else if (playerNumber == 2 || playerNumber == 4) {
+        return 2;
+    }
+}
+
+function isTeam(playerNumber, team) {
+    if (playerNumber == 1 || playerNumber == 3) {
+        if (team == 1) {
+            return true;
+        } else if (team == 2) {
+            return false;
+        }
+    } else if (playerNumber == 2 || playerNumber == 4) {
+        if (team == 1) {
+            return false;
+        } else if (team == 2) {
+            return true;
+        }
+    }
 }
