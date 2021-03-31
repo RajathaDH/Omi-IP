@@ -220,6 +220,14 @@ function connectionError(data) {
 
 }
 
+function roomError(data) {
+    popupDiv.style.display = 'flex';
+    roomErrorElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+    roomErrorElement.innerText = data.message;
+
+}
+
 function createHand(hand) {
     player1Cards.innerHTML = '';
 
