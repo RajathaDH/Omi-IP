@@ -320,13 +320,13 @@ function roundWinner(data) {
 
     setTimeout(() => {
         if (relativeRoundWinner == 1) {
-            addDot('green');
+            addDotG("green");
 
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(${bodyRect.height}px)`;
             }
         } else if (relativeRoundWinner == 2) {
-            addDot('purple');
+            addDotP("purple");
 
             for (let i = 0; i < 4; i++) {
 
@@ -334,7 +334,7 @@ function roundWinner(data) {
             }
 
         } else if (relativeRoundWinner == 3) {
-            addDot('green');
+            addDotG("green");
 
 
             for (let i = 0; i < 4; i++) {
@@ -342,7 +342,7 @@ function roundWinner(data) {
             }
 
         } else if (relativeRoundWinner == 4) {
-            addDot('purple');
+            addDotP("purple");
 
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(-${bodyRect.width}px)`;
@@ -358,17 +358,36 @@ function roundWinner(data) {
     console.log(tableCards);
 }
 
-function addDot(color) {
+function addDotP(color) {
     const dot = document.createElement('div');
     dot.classList.add(`${color}-dot`);
     dot.classList.add('dot');
     dot.classList.add('test-dot');
+    otherTeamDots.appendChild(dot);
 
-    if (color = "green") {
-        yourTeamDots.appendChild(dot);
-    } else {
-        otherTeamDots.appendChild(dot);
-    }
+    console.log(color);
+
+    // if (color = "purple") {
+    //     yourTeamDots.appendChild(dot);
+    // } else if (color = "green") {
+    //     otherTeamDots.appendChild(dot);
+    // }
+
+}
+
+function addDotG(color) {
+    const dot = document.createElement('div');
+    dot.classList.add(`${color}-dot`);
+    dot.classList.add('dot');
+    dot.classList.add('test-dot');
+    yourTeamDots.appendChild(dot);
+    console.log(color);
+
+    // if (color = "purple") {
+    //     yourTeamDots.appendChild(dot);
+    // } else if (color = "green") {
+    //     otherTeamDots.appendChild(dot);
+    // }
 
 }
 
