@@ -228,6 +228,25 @@ function roomError(data) {
 
 }
 
+function playerDisconnected() {
+    popupDiv.style.display = 'flex';
+    playerDisconnectedElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+
+    playerDisconnectedElement.innerHTML = `Player Disconnected <br> Returning to Lobby in 3`;
+
+    setTimeout(() => {
+        playerDisconnectedElement.innerHTML = `Player Disconnected <br> Returning to Lobby in 2`;
+    }, 1000);
+    setTimeout(() => {
+        playerDisconnectedElement.innerHTML = `Player Disconnected <br> Returning to Lobby in 1`;
+    }, 2000);
+
+    setTimeout(() => {
+        window.location = 'lobby.html';
+    }, 3000);
+}
+
 function createHand(hand) {
     player1Cards.innerHTML = '';
 
