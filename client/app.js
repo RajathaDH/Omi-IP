@@ -212,6 +212,13 @@ socket.on('game-finished', data => {
     gameFinish(data);
 });
 
+function connectionError(data) {
+    popupDiv.style.display = 'flex';
+    connectionErrorElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+    connectionErrorElement.innerText = data.error;
+
+}
 
 function createHand(hand) {
     player1Cards.innerHTML = '';
