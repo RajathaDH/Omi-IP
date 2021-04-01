@@ -683,3 +683,16 @@ nav{
       align-items: center;
       margin-top:20px ;
   }
+  .close-button{
+      width: 50%;
+      transition:all 300ms ease;
+      cursor: pointer;
+  }
+  .close-button:hover{
+    transform: scale(1.1);
+  }
+  .close-button-container{
+    display: flex;  
+    justify-content: center;
+      align-items: center;
+  }
