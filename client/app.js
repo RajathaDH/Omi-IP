@@ -84,6 +84,8 @@ const roomErrorElement = document.querySelector("#room-error");
 const playerDisconnectedElement = document.querySelector("#player-disconnected");
 const otherTeamDots = document.querySelector('#other-team-dots');
 const yourTeamDots = document.querySelector('#your-team-dots');
+const yourTeamScoreElement = document.querySelector('#your-team-score');
+const otherTeamScoreElement = document.querySelector('#other-team-score');
 
 let matchNumber = 1;
 let playerNumber = -1;
@@ -93,7 +95,9 @@ let firstCard = null;
 let currentPlayer = 1;
 let tableCards = [];
 let isGameEnded = false;
-let roundsCount = 0;
+let matchCount = 0;
+let yourTeamScore = 0;
+let otherTeamScore = 0;
 
 socket.on('connection-error', data => {
     console.log(data);
@@ -193,8 +197,8 @@ socket.on('round-winner', data => {
 // sends the winner of the current match at the end
 socket.on('match-winner', data => {
     console.log(data);
-    roundsCount++;
-    if (roundsCount < 2) {
+    matchCount++;
+    if (matchCount > 2) {
         isGameEnded = true;
     }
     startNewMatch(data);
@@ -313,6 +317,7 @@ function trumpCard(data) {
 }
 
 function roundWinner(data) {
+    glowCurrentPlayer();
     firstCard = null;
     let bodyRect = document.body.getBoundingClientRect();
 
@@ -320,30 +325,21 @@ function roundWinner(data) {
 
     setTimeout(() => {
         if (relativeRoundWinner == 1) {
-            addDotG("green");
-
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(${bodyRect.height}px)`;
             }
         } else if (relativeRoundWinner == 2) {
-            addDotP("purple");
-
             for (let i = 0; i < 4; i++) {
 
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(${bodyRect.width}px)`;
             }
 
         } else if (relativeRoundWinner == 3) {
-            addDotG("green");
-
-
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(-${bodyRect.height}px)`;
             }
 
         } else if (relativeRoundWinner == 4) {
-            addDotP("purple");
-
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(-${bodyRect.width}px)`;
             }
@@ -358,36 +354,35 @@ function roundWinner(data) {
     console.log(tableCards);
 }
 
-function addDotP(color) {
-    const dot = document.createElement('div');
-    dot.classList.add(`${color}-dot`);
-    dot.classList.add('dot');
-    dot.classList.add('test-dot');
-    otherTeamDots.appendChild(dot);
+function glowCurrentPlayer() {
+    if (currentPlayer == 1) {
 
-    console.log(color);
-
-    // if (color = "purple") {
-    //     yourTeamDots.appendChild(dot);
-    // } else if (color = "green") {
-    //     otherTeamDots.appendChild(dot);
-    // }
-
+    }
 }
 
-function addDotG(color) {
+function addScore(color) {
     const dot = document.createElement('div');
     dot.classList.add(`${color}-dot`);
     dot.classList.add('dot');
     dot.classList.add('test-dot');
-    yourTeamDots.appendChild(dot);
-    console.log(color);
 
-    // if (color = "purple") {
-    //     yourTeamDots.appendChild(dot);
-    // } else if (color = "green") {
-    //     otherTeamDots.appendChild(dot);
-    // }
+
+    if (color == "purple") {
+        otherTeamScore++;
+        otherTeamScoreElement.innerText = otherTeamScore.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        });
+
+        otherTeamDots.appendChild(dot);
+    } else if (color == "green") {
+        yourTeamScore++;
+        yourTeamScoreElement.innerText = yourTeamScore.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        });
+        yourTeamDots.appendChild(dot);
+    }
 
 }
 
@@ -586,6 +581,7 @@ function getRelativePlayerNumber(playerNumber, otherPlayer) {
 
 function startNewMatch(data) {
 
+
     if (isGameEnded == true) return;
 
 
@@ -606,10 +602,26 @@ function startNewMatch(data) {
         setTimeout(() => {
             newMatchStarting.style.display = 'none';
             waitingForTrumps.style.display = 'flex';
-            console.log("startNewMatch()");
+
         }, 2000);
     }, 1000);
 
+    if (data.matchWinner == "Team 1") {
+        if (isTeam(playerNumber, 1)) {
+            addScore('green');
+
+
+
+        } else {
+            addScore('purple');
+        }
+    } else if (data.matchWinner == "Team 2") {
+        if (isTeam(playerNumber, 2)) {
+            addScore('green')
+        } else {
+            addScore('purple');
+        }
+    }
 
 }
 
