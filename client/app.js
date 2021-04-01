@@ -3,6 +3,7 @@ const url = new URL(urlString);
 const room = url.searchParams.get('room');
 const scoreLimit = url.searchParams.get('scoreLimit');*/
 
+
 function getToken() {
     const name = 'omi-token' + '=';
     const decodedCookie = decodeURIComponent(document.cookie);
@@ -75,6 +76,14 @@ const opponent1Hand = document.querySelector("#opponent-1-hand");
 const opponent2Hand = document.querySelector("#opponent-2-hand");
 const teammateHand = document.querySelector("#teammate-hand");
 const inviteYourFriends = document.querySelector("#invite-your-friends");
+const matchWinnerElement = document.querySelector('#match-winner');
+const newMatchStarting = document.querySelector("#new-game-starting");
+const gameEndElement = document.querySelector("#game-end");
+const connectionErrorElement = document.querySelector("#connection-error");
+const roomErrorElement = document.querySelector("#room-error");
+const playerDisconnectedElement = document.querySelector("#player-disconnected");
+const otherTeamDots = document.querySelector('#other-team-dots');
+const yourTeamDots = document.querySelector('#your-team-dots');
 
 let matchNumber = 1;
 let playerNumber = -1;
@@ -83,15 +92,19 @@ let matchPlayers = [];
 let firstCard = null;
 let currentPlayer = 1;
 let tableCards = [];
+let isGameEnded = false;
+let roundsCount = 0;
 
 socket.on('connection-error', data => {
     console.log(data);
     window.location = 'login.html';
+    connectionError(data);
 });
 
 // sends any errors that can occur while joining room (room full, already in the room)
 socket.on('room-error', data => {
     console.log(data);
+    roomError(data);
 });
 
 socket.on('new-room', data => {
@@ -111,7 +124,7 @@ socket.on('player-connect', data => {
 
 socket.on('player-disconnect', () => {
     //window.location.replace('http://localhost:5000');
-
+    playerDisconnected();
     console.log('Player disconnected');
 });
 
@@ -150,6 +163,7 @@ socket.on('played-card', data => {
 
 // your turn to call trumps
 socket.on('call-trump', () => {
+    popupDiv.style.display = 'flex';
     waitingForTrumps.style.display = 'none';
 
     setTimeout(() => {
@@ -179,6 +193,12 @@ socket.on('round-winner', data => {
 // sends the winner of the current match at the end
 socket.on('match-winner', data => {
     console.log(data);
+    roundsCount++;
+    if (roundsCount < 2) {
+        isGameEnded = true;
+    }
+    startNewMatch(data);
+
 });
 
 // sends the current scores of the players at the end of the match
@@ -188,7 +208,46 @@ socket.on('match-scores', data => {
 
 socket.on('game-finished', data => {
     console.log(data);
+    isGameEnded = true;
+
+    //game finished eka call wenne startNewMatch() eka call unata passe;
+    gameFinish(data);
 });
+
+function connectionError(data) {
+    popupDiv.style.display = 'flex';
+    connectionErrorElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+    connectionErrorElement.innerText = data.error;
+
+}
+
+function roomError(data) {
+    popupDiv.style.display = 'flex';
+    roomErrorElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+    roomErrorElement.innerText = data.message;
+
+}
+
+function playerDisconnected() {
+    popupDiv.style.display = 'flex';
+    playerDisconnectedElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+
+    playerDisconnectedElement.innerHTML = `Player Disconnected <br> Returning to Lobby in 3`;
+
+    setTimeout(() => {
+        playerDisconnectedElement.innerHTML = `Player Disconnected <br> Returning to Lobby in 2`;
+    }, 1000);
+    setTimeout(() => {
+        playerDisconnectedElement.innerHTML = `Player Disconnected <br> Returning to Lobby in 1`;
+    }, 2000);
+
+    setTimeout(() => {
+        window.location = 'lobby.html';
+    }, 3000);
+}
 
 function createHand(hand) {
     player1Cards.innerHTML = '';
@@ -235,6 +294,7 @@ function validateCard(card) {
 function callTrump(trump) {
     socket.emit('call-trump', trump);
     trumpCallDiv.style.display = 'none';
+    fourRandomCards.style.display = 'none';
     popupDiv.style.display = 'none';
 }
 
@@ -260,22 +320,32 @@ function roundWinner(data) {
 
     setTimeout(() => {
         if (relativeRoundWinner == 1) {
+            addDotG("green");
+
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateY(${bodyRect.height}px)`;
+                tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(${bodyRect.height}px)`;
             }
         } else if (relativeRoundWinner == 2) {
+            addDotP("purple");
+
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateX(${bodyRect.width}px)`;
+
+                tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(${bodyRect.width}px)`;
             }
-    
+
         } else if (relativeRoundWinner == 3) {
+            addDotG("green");
+
+
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateY(-${bodyRect.height}px)`;
+                tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(-${bodyRect.height}px)`;
             }
-    
+
         } else if (relativeRoundWinner == 4) {
+            addDotP("purple");
+
             for (let i = 0; i < 4; i++) {
-                tableCards[i].style.transform = `translateX(-${bodyRect.width}px)`;
+                tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(-${bodyRect.width}px)`;
             }
         }
     }, 2000);
@@ -286,6 +356,39 @@ function roundWinner(data) {
     }, 3000);
 
     console.log(tableCards);
+}
+
+function addDotP(color) {
+    const dot = document.createElement('div');
+    dot.classList.add(`${color}-dot`);
+    dot.classList.add('dot');
+    dot.classList.add('test-dot');
+    otherTeamDots.appendChild(dot);
+
+    console.log(color);
+
+    // if (color = "purple") {
+    //     yourTeamDots.appendChild(dot);
+    // } else if (color = "green") {
+    //     otherTeamDots.appendChild(dot);
+    // }
+
+}
+
+function addDotG(color) {
+    const dot = document.createElement('div');
+    dot.classList.add(`${color}-dot`);
+    dot.classList.add('dot');
+    dot.classList.add('test-dot');
+    yourTeamDots.appendChild(dot);
+    console.log(color);
+
+    // if (color = "purple") {
+    //     yourTeamDots.appendChild(dot);
+    // } else if (color = "green") {
+    //     otherTeamDots.appendChild(dot);
+    // }
+
 }
 
 function playerConnect(data) {
@@ -309,6 +412,9 @@ function playerConnect(data) {
 function startGame() {
     waitingForTrumps.style.display = 'none';
     playerConnectDiv.style.display = 'none';
+    inviteYourFriends.style.display = 'none';
+
+
     document.querySelector("#wating-for-players").style.display = 'none';
     gameDetails.style.display = 'flex';
     gameDetails.innerText = 'Game is starting';
@@ -316,6 +422,7 @@ function startGame() {
         gameDetails.style.display = 'none';
         inviteYourFriends.style.display = 'none';
         waitingForTrumps.style.display = 'flex';
+        console.log('startGame');
     }, 2000);
 
     player1Name.innerText = matchPlayers[0].playerName;
@@ -326,6 +433,7 @@ function startGame() {
 
 }
 function showRandomCards() {
+    fourRandomCards.style.display = 'flex';
     fourRandomCards.innerHTML = '';
     for (let i = 0; i < 4; i++) {
         const img = document.createElement('img');
@@ -348,12 +456,7 @@ function playerCardMove(img, card) {
                             rotate(${offSet > 0 ? '-' : ''}180deg)`;
 
     console.log(playerHand);
-    for (let i = 0; i < playerHand.length; i++) {
-        if (card.name == playerHand[i].name) {
-            playerHand.pop(i);
-            break;
-        }
-    }
+    playerHand = playerHand.filter(playerCard => playerCard.name != card.name);
     console.log(playerHand);
 }
 
@@ -479,4 +582,72 @@ function getRelativePlayerNumber(playerNumber, otherPlayer) {
     }
 
     return false;
+}
+
+function startNewMatch(data) {
+
+    if (isGameEnded == true) return;
+
+
+    popupDiv.style.display = 'flex';
+    matchWinnerElement.style.display = 'flex';
+    if (data.matchWinner == "Tie Match") {
+        matchWinnerElement.innerHTML = `${data.matchWinner}`;
+
+    } else {
+        matchWinnerElement.innerHTML = `${data.matchWinner} won the match`;
+    }
+
+    setTimeout(() => {
+        matchWinnerElement.style.display = 'none';
+        newMatchStarting.style.display = 'flex';
+        newMatchStarting.innerHTML = ` Match ${++matchNumber} starting`
+
+        setTimeout(() => {
+            newMatchStarting.style.display = 'none';
+            waitingForTrumps.style.display = 'flex';
+            console.log("startNewMatch()");
+        }, 2000);
+    }, 1000);
+
+
+}
+
+function gameFinish(data) {
+    popupDiv.style.display = 'flex';
+    gameEndElement.style.display = 'flex';
+    waitingForTrumps.style.display = 'none';
+    if (isTeam(playerNumber, data.gameWinner)) {
+        gameEndElement.innerHTML =
+            `VICTORY <br> You Won <br><a href="lobby.html" class="back-to-lobby-btn">Back to Lobby</a> `;
+    } else {
+        gameEndElement.innerHTML =
+            `GAME OVER <br> You Lose <br><a href="lobby.html" class="back-to-lobby-btn">Back to Lobby</a> `;
+    }
+
+
+}
+
+function getTeam(playerNumber) {
+    if (playerNumber == 1 || playerNumber == 3) {
+        return 1;
+    } else if (playerNumber == 2 || playerNumber == 4) {
+        return 2;
+    }
+}
+
+function isTeam(playerNumber, team) {
+    if (playerNumber == 1 || playerNumber == 3) {
+        if (team == 1) {
+            return true;
+        } else if (team == 2) {
+            return false;
+        }
+    } else if (playerNumber == 2 || playerNumber == 4) {
+        if (team == 1) {
+            return false;
+        } else if (team == 2) {
+            return true;
+        }
+    }
 }
