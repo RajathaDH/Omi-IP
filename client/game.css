@@ -363,6 +363,8 @@ nav{
     color: white;
     border-radius: 20px;
     box-shadow:0 0 16px   rgba(255, 255, 255,0.3);
+    padding: 20px 40px;
+    margin: 10px 0;
     /**/
 }
 .select-trumps{
@@ -397,7 +399,20 @@ nav{
     margin-top: 1rem;
     
 }
-
+.game-over{
+    
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    width: 30%;
+    height: 30%;
+    display: none;
+    
+}
+.error-pops{
+    display: none;
+}
 
 
 .waiting-for-trumps{
@@ -477,6 +492,9 @@ nav{
     transform:scale(1.1);
     
 }
+.game-over{
+    
+}
 
 #trump-spades{
     background-image:url("assets/imgs/spades.png");
@@ -491,6 +509,22 @@ nav{
     background-image:url("assets/imgs/diamonds.png");
 }
 /**************************/
+.back-to-lobby-btn{
+    text-decoration:none;
+    color: rgb(73, 73, 73);
+    background-color:#FFD500;
+    box-shadow:0 0 16px rgba(255, 255, 255, 0.212);
+    padding: 10px 20px;
+    border-radius:2rem;
+    margin: 10px 0;
+    font-size: 1rem;
+    transition:all 500ms ease;
+}
+.back-to-lobby-btn:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 16px rgba(232, 255, 158, 0.404);
+}
+.new-game-starting{ display:none;}
 
 @keyframes add-new-dot{
     0%{
