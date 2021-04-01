@@ -4,30 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <title>Omi</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
 </head>
 <body>
-    <div class="container">
-        <form>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control">
+    <div class="main-container">
+        <div class="login-div">
+            <div class="logo-div">
+                <img class="logo" src="assets/imgs/logo.png" alt="Logo">
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control">
+            <div class="form-header-text">
+                <span class="header-text">Register</span>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" class="form-control">
+            <form>
+                <div class="input-boxes-div">
+                    <input class="input-boxes" type="text" name="username" id="username" placeholder="Name">
+                    <input class="input-boxes" type="text" name="email" id="email" placeholder="E-mail">
+                    <input class="input-boxes" type="text" name="password" id="password" placeholder="Password">
+                </div>
+                <div class="messages"></div>
+                <div class="form-footer">
+                    <button type="submit" class="form-btn">Register</button>
+                </div>
+            </form>
+            <div class="form-footer-text">
+                <a href="login.html">
+                <span class="footer-text">Already have an Account? </span>
+                </a>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+        </div>
+        <img class="home-btn" src="assets/imgs/btnHome.png" onclick="window.location='index.html'">
     </div>
 
     <script>
         const form = document.querySelector('form');
+        const messagesElement = document.querySelector('.messages');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -63,6 +74,16 @@
             });
 
             const data = await res.json();
+
+            if (data.status == 'success') {
+                messagesElement.innerText = 'Account has been created.';
+
+                setTimeout(() => {
+                    window.location = 'login.html';
+                }, 4000);
+            } else {
+                messagesElement.innerText = 'Error creating account.';
+            }
 
             console.log(data);
         }
