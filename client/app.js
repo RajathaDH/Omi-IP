@@ -96,6 +96,17 @@ const player2Points = document.querySelector('#player-2-points');
 const player3Points = document.querySelector('#player-3-points');
 const player4Points = document.querySelector('#player-4-points');
 
+/********SOUNDS******/
+const backgroundAudio = new Audio('assets/sounds/game-page-bg.mp3');
+const clickAudio = new Audio('assets/sounds/click.mp3');
+const myPointAddAudio = new Audio('assets/sounds/points-add.mp3');
+const enemyPointAddAudio = new Audio('assets/sounds/enemy-point-sound.mp3');
+const errorCardAudio = new Audio('assets/sounds/error-card.mp3');
+
+// backgroundAudio.play();
+// backgroundAudio.loop = true;
+
+/*********************************************/
 let matchNumber = 1;
 let playerNumber = -1;
 let playerHand = [];
@@ -283,12 +294,17 @@ function createHand(hand) {
                     socket.emit('play-card', card);
                     tableCards.push(img);
                     playerCardMove(img, card);
+                    clickSound();
                 } else {
                     invalidCard(img);
+                    errorCardAudio.currentTime = 0;
+                    errorCardAudio.play();
                 }
             }
             else {
                 invalidCard(img);
+                errorCardAudio.currentTime = 0;
+                errorCardAudio.play();
             }
         });
         player1Cards.appendChild(img);
@@ -404,10 +420,14 @@ function addPointsToPlayer(roundWinner, relativeRoundWinner) {
 
     if (relativeRoundWinner == 1 || relativeRoundWinner == 3) {
         dot.classList.add(`green-dot`);
+        myPointAddAudio.currentTime = 0;
+        myPointAddAudio.play();
 
     }
     else if (relativeRoundWinner == 2 || relativeRoundWinner == 4) {
         dot.classList.add(`purple-dot`);
+        enemyPointAddAudio.currentTime = 0;
+        enemyPointAddAudio.play()
     }
     dot.classList.add('dot');
     dot.classList.add('test-dot');
@@ -723,4 +743,9 @@ function isTeam(playerNumber, team) {
             return true;
         }
     }
+}
+
+function clickSound() {
+    clickAudio.currentTime = 0;
+    clickAudio.play();
 }
