@@ -4,6 +4,19 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+router.get('/user/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await User.findOne({ _id: userId });
+
+        res.json({ score: user.score });
+    } catch(err) {
+        console.log(err);
+        res.json({ score: 0 });
+    }
+});
+
 router.get('/leaderboard', async (req, res) => {
     try {
         const users = await User.find({}).sort({ score: -1 }).limit(10);

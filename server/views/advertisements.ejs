@@ -11,7 +11,7 @@
     <div class="container">
         <nav class="navbar">
             <div>
-                <img src="/assets/Group 1 with shadow.png" class="logo" alt="Logo">
+                <img src="/assets/imgs/logo.png" class="logo" alt="Logo">
             </div>
             <div>
                 <a href="/admins/logout" class="nav-link">Logout</a>
@@ -51,6 +51,8 @@
                             <div id="d<%= advertisement._id %>">
                                 <h3><%= advertisement.title %></h3>
                                 <p><%= advertisement.details %></p>
+                                <p>Views: <%= advertisement.views %></p>
+                                <p>Clicks: <%= advertisement.clicks %></p>
                             </div>
                             <form action="/advertisements/edit/<%= advertisement._id %>" method="POST" id="f<%= advertisement._id %>">
                                 <div>

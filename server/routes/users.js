@@ -55,6 +55,35 @@ router.post('/login', async (req, res) => {
     }
     catch(er){
         console.log(er);
+        res.json({ status: 'error', error: 'Internal error' });
+    }
+});
+
+router.post('/login/pc', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+
+        if(!user) return res.json({ status: 'error', error: "Invalid Email"});
+
+        if(await bcrypt.compare(req.body.password, user.password)){
+            const playerData = {
+                dbId: user._id,
+                username: user.username
+            };
+            
+            const accessToken = jwt.sign(playerData, process.env.PC_TOKEN); //encrypt the player data
+
+            return res.json({
+                status: "success",
+                accessToken
+            });
+        }
+        else{   
+            return res.json({ status: 'error', error: "Incorrect password" });
+        }
+    } catch (err) {
+        console.log(err);
+        res.json({ status: 'error', error: 'Internal error' });
     }
 });
 

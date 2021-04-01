@@ -6,7 +6,9 @@ const roomId = document.querySelector('#room-id');
 const scoreElement = document.querySelector('#score');
 const createRoomPopup = document.querySelector('.creating-room');
 const leaderboardElement = document.querySelector('#leaderboard');
-const advertisementElement = document.querySelector('.addbar');
+const advertisementElement = document.querySelector('#advertisement');
+
+const BASE_URL = 'http://localhost:3000';
 
 function popupLeaderboard(){
     popupDiv.style.display = 'flex';
@@ -62,10 +64,10 @@ function decodeToken(token) {
 
 async function fetchScore(dbId) {
     try {
-        const result = await fetch(`http://localhost:3000/users/score/${dbId}`);
+        const result = await fetch(`${BASE_URL}/scores/user/${dbId}`);
         const data = await result.json();
         
-        return data;
+        return data.score;
     } catch(err) {
         console.log(err);
         return 0;
@@ -74,7 +76,7 @@ async function fetchScore(dbId) {
 
 async function fetchLeaderboard() {
     try {
-        const result = await fetch('http://localhost:3000/scores/leaderboard');
+        const result = await fetch(`${BASE_URL}/scores/leaderboard`);
         const data = await result.json();
 
         return data.leaderboard;
@@ -86,10 +88,10 @@ async function fetchLeaderboard() {
 
 async function fetchAdvertisement() {
     try {
-        const result = await fetch('http://localhost:3000/advertisements/random');
+        const result = await fetch(`${BASE_URL}/advertisements/random`);
         const data = await result.json();
 
-        return data;
+        return data.advertisement;
     } catch(err) {
         console.log(err);
         return null;
@@ -101,8 +103,23 @@ function createAdvertisement(advertisement) {
 
     console.log(advertisement);
 
-    advertisementElement.addEventListener('click', () => {
-        console.log('advertisement clicked');
+    const advertisementImg = document.createElement('img');
+    advertisementImg.src = `${BASE_URL}/uploads/advertisement-photos/${advertisement.imageName}`;
+    advertisementElement.appendChild(advertisementImg);
+
+    const advertisementDiv = document.createElement('div');
+    const advertisementHeading = document.createElement('h1');
+    advertisementHeading.innerText = advertisement.title;
+    advertisementDiv.appendChild(advertisementHeading);
+    const advertisementDetails = document.createElement('p');
+    advertisementDetails.innerText = advertisement.details;
+    advertisementDiv.appendChild(advertisementDetails);
+    advertisementElement.appendChild(advertisementDiv);
+
+    advertisementElement.addEventListener('click', async () => {
+        const result = await fetch(`${BASE_URL}/advertisements/visit/${advertisement._id}`);
+        const data = await result.json();
+        window.open(data.link);
     });
 }
 
