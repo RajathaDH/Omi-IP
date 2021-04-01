@@ -267,32 +267,32 @@ nav{
 }
 .player-1-name-drop-shadow{
     text-shadow:0 3px 6px #FF00FF;
-    animation:player-name-glow-enemy 2000ms ease infinite;
+    animation:player-name-glow-enemy 500ms ease infinite;
 }
 .player-3-name-drop-shadow{
     text-shadow:0 3px 6px #00631A;
-    animation:player-name-glow-player 2000ms ease infinite;
+    animation:player-name-glow-player 500ms ease infinite;
 }
 .player-1-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #00FFA8;
-    animation: glow-blue 4000ms infinite ease;
+    animation: glow-blue 1000ms infinite ease;
 
 }
 .player-2-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #FFD500;
-    animation: glow-yellow 4000ms infinite ease;
+    animation: glow-yellow 1000ms infinite ease;
 }
 .player-3-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #00FFE5;
-    animation: glow-blue 4000ms infinite ease;
+    animation: glow-blue 1000ms infinite ease;
 }
 .player-4-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #FFD500;
-    animation: glow-yellow 4000ms ease-in-out infinite ;
+    animation: glow-yellow 1000ms ease-in-out infinite ;
 }
 .trump{
     
