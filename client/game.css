@@ -324,7 +324,7 @@ nav{
 
 .test-dot{
     
-    animation:add-new-dot 3000ms ease infinite ;
+    animation:add-new-dot 3000ms ease ;
 }
 
 /*************************/
@@ -530,10 +530,8 @@ nav{
     0%{
         transform:scale(0);
     }
-    50%{
+    100%{
         transform:scale(1);
-    }100%{
-        transform:scale(0);
     }
 }
 
