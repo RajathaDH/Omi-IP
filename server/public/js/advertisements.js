@@ -7,23 +7,23 @@ function previewImage(event){
     }
 }
 
-function openEdit(reportId){
-    const reportContent = document.getElementById('d' + reportId);
-    const reportForm = document.getElementById('f' + reportId);
+function openEdit(advertisementId){
+    const advertisementContent = document.getElementById('d' + advertisementId);
+    const advertisementForm = document.getElementById('f' + advertisementId);
 
-    if(reportForm.style.display == 'none'){
-        reportContent.style.display = 'none';
-        reportForm.style.display = 'block';
+    if(advertisementForm.style.display == 'none'){
+        advertisementContent.style.display = 'none';
+        advertisementForm.style.display = 'block';
     } else {
-        reportContent.style.display = 'block';
-        reportForm.style.display = 'none';
+        advertisementContent.style.display = 'block';
+        advertisementForm.style.display = 'none';
     }
 }
 
-function cancelEdit(reportId){
-    const reportContent = document.getElementById('d' + reportId);
-    const reportForm = document.getElementById('f' + reportId);
+function cancelEdit(advertisementId){
+    const advertisementContent = document.getElementById('d' + advertisementId);
+    const advertisementForm = document.getElementById('f' + advertisementId);
 
-    reportContent.style.display = 'block';
-    reportForm.style.display = 'none';
+    advertisementContent.style.display = 'block';
+    advertisementForm.style.display = 'none';
 }

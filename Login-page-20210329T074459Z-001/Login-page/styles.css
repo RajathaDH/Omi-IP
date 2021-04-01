@@ -95,14 +95,14 @@
     color: rgb(255, 255, 255);
     cursor: pointer;
     transition: 0.5s transform ease;
+    border: none;
+    outline: none;
 }
 .form-btn:hover{
     box-shadow: 0px 0px 10px rgb(255, 255, 255);
     transform: scale(1.05);
 }
-#form-btn-text{
-    font-size: 200%;
-}
+
 .footer-text{
     font-size: 110%;
     margin: 20px;
@@ -123,4 +123,8 @@
 }
 .a{
     text-decoration: none;
+}
+
+.messages {
+    text-align: center;
 }

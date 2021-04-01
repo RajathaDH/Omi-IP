@@ -6,6 +6,10 @@ const Advertisement = require('../models/Advertisement');
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    res.redirect('/admins/login');
+});
+
 router.get('/login', checkNotAuthenticated, (req, res) => {
     res.render('login');
 });

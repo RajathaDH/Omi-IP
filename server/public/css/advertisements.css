@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    background-image: url('../assets/bgAdvertisements.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.navbar {
+    width: 100%;
+    height: 10%;
+    max-height: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: black;
+}
+
+.navbar > div {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    height: 100%;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 20px;
+}
+
+.section {
+    width: 80%;
+    margin: 40px auto;
+    border-radius: 20px;
+    background: black;
+    color: white;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    text-align: center;
+    margin: 10px;
+}
+
+.new-form-container {
+    display: flex;
+    width: 100%;
+    height: 400px;
+    padding: 20px;
+}
+
+.form-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.form-right {
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-left input {
+    width: 90%;
+    height: 4rem;
+    padding: 10px;
+    background: #333;
+    font-size: 2rem;
+    border-radius: 1rem;
+    margin: 10px;
+    border: none;
+    outline: none;
+}
+
+.form-left textarea {
+    width: 90%;
+    height: 6rem;
+    resize: none;
+    padding: 10px;
+    background: #333;
+    font-size: 2rem;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+.upload-label {
+    width: 90%;
+    padding: 10px;
+    border-radius: 1rem;
+    background: #333;
+    cursor: pointer;
+}
+
+.image-preview-container {
+    width: 90%;
+    height: 90%;
+    background: yellow;
+    border-radius: 1rem;
+}
+
+#image-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+}
+
+.btn-submit {
+    width: 40%;
+    height: 4rem;
+    font-size: 2rem;
+    margin: 10px;
+    color: black;
+    background: yellow;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+
+.advertisement-container {
+    width: 80%;
+    height: 300px;
+    margin: 10px auto;
+    border: 2px solid grey;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.advertisement-container img {
+    width: 250px;
+    height: 200px;
+}
