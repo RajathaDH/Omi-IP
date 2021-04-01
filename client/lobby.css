@@ -143,9 +143,11 @@ body{
     width: 70%;
     height: 80%;
     display: flex;
+    align-items: center;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 0 20px #fff1bada;
+    cursor: pointer;
 }
 
 /* ********************************* */
@@ -274,7 +276,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 
 .creating-room {

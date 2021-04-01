@@ -108,6 +108,7 @@ function createAdvertisement(advertisement) {
     advertisementElement.appendChild(advertisementImg);
 
     const advertisementDiv = document.createElement('div');
+    advertisementDiv.classList.add('advertisement-details');
     const advertisementHeading = document.createElement('h1');
     advertisementHeading.innerText = advertisement.title;
     advertisementDiv.appendChild(advertisementHeading);
