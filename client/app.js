@@ -84,7 +84,29 @@ const roomErrorElement = document.querySelector("#room-error");
 const playerDisconnectedElement = document.querySelector("#player-disconnected");
 const otherTeamDots = document.querySelector('#other-team-dots');
 const yourTeamDots = document.querySelector('#your-team-dots');
+const yourTeamScoreElement = document.querySelector('#your-team-score');
+const otherTeamScoreElement = document.querySelector('#other-team-score');
+const player1Image = document.querySelector('#player-1-image');
+const player2Image = document.querySelector('#player-2-image');
+const player3Image = document.querySelector('#player-3-image');
+const player4Image = document.querySelector('#player-4-image');
 
+const player1Points = document.querySelector('#player-1-points');
+const player2Points = document.querySelector('#player-2-points');
+const player3Points = document.querySelector('#player-3-points');
+const player4Points = document.querySelector('#player-4-points');
+
+/********SOUNDS******/
+const backgroundAudio = new Audio('assets/sounds/game-page-bg.mp3');
+const clickAudio = new Audio('assets/sounds/click.mp3');
+const myPointAddAudio = new Audio('assets/sounds/points-add.mp3');
+const enemyPointAddAudio = new Audio('assets/sounds/enemy-point-sound.mp3');
+const errorCardAudio = new Audio('assets/sounds/error-card.mp3');
+
+// backgroundAudio.play();
+// backgroundAudio.loop = true;
+
+/*********************************************/
 let matchNumber = 1;
 let playerNumber = -1;
 let playerHand = [];
@@ -93,7 +115,9 @@ let firstCard = null;
 let currentPlayer = 1;
 let tableCards = [];
 let isGameEnded = false;
-let roundsCount = 0;
+let matchCount = 0;
+let yourTeamScore = 0;
+let otherTeamScore = 0;
 
 socket.on('connection-error', data => {
     console.log(data);
@@ -136,6 +160,7 @@ socket.on('player-number', data => {
 
 socket.on('game-started', () => {
     startGame();
+    glowCurrentPlayer();
 });
 
 // sends the players cards when at the start of each match
@@ -159,6 +184,7 @@ socket.on('played-card', data => {
         //playCard(data);
     }
     otherCardMove(getRelativePlayerNumber(playerNumber, data.player), data.card.imageName.replace('.png', ''));
+    glowCurrentPlayer();
 });
 
 // your turn to call trumps
@@ -166,11 +192,13 @@ socket.on('call-trump', () => {
     popupDiv.style.display = 'flex';
     waitingForTrumps.style.display = 'none';
 
+
     setTimeout(() => {
         trumpCallDiv.style.display = 'flex';
         waitingForTrumps.style.display = 'none';
         showRandomCards();
     }, 4000);
+
 });
 
 // sends the player number and trumps when someone calls trumps
@@ -181,6 +209,7 @@ socket.on('trump-card', data => {
     popupDiv.style.display = 'none';
     trumpCard(data);
     createHand(playerHand);
+    glowCurrentPlayer();
 });
 
 // sends the player who won the current round and current points (when 4 cards are on the table)
@@ -188,13 +217,15 @@ socket.on('round-winner', data => {
     currentPlayer = data.roundWinner;
     console.log(data);
     roundWinner(data);
+    glowCurrentPlayer();
+
 });
 
 // sends the winner of the current match at the end
 socket.on('match-winner', data => {
     console.log(data);
-    roundsCount++;
-    if (roundsCount < 2) {
+    matchCount++;
+    if (matchCount > 9) {
         isGameEnded = true;
     }
     startNewMatch(data);
@@ -263,12 +294,17 @@ function createHand(hand) {
                     socket.emit('play-card', card);
                     tableCards.push(img);
                     playerCardMove(img, card);
+                    clickSound();
                 } else {
                     invalidCard(img);
+                    errorCardAudio.currentTime = 0;
+                    errorCardAudio.play();
                 }
             }
             else {
                 invalidCard(img);
+                errorCardAudio.currentTime = 0;
+                errorCardAudio.play();
             }
         });
         player1Cards.appendChild(img);
@@ -313,37 +349,32 @@ function trumpCard(data) {
 }
 
 function roundWinner(data) {
+
     firstCard = null;
     let bodyRect = document.body.getBoundingClientRect();
 
     let relativeRoundWinner = getRelativePlayerNumber(playerNumber, data.roundWinner);
+    addPointsToPlayer(data.roundWinner, relativeRoundWinner);
+
 
     setTimeout(() => {
-        if (relativeRoundWinner == 1) {
-            addDotG("green");
 
+        if (relativeRoundWinner == 1) {
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(${bodyRect.height}px)`;
             }
         } else if (relativeRoundWinner == 2) {
-            addDotP("purple");
-
             for (let i = 0; i < 4; i++) {
 
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(${bodyRect.width}px)`;
             }
 
         } else if (relativeRoundWinner == 3) {
-            addDotG("green");
-
-
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateX(${bodyRect.width / 2}px) translateY(-${bodyRect.height}px)`;
             }
 
         } else if (relativeRoundWinner == 4) {
-            addDotP("purple");
-
             for (let i = 0; i < 4; i++) {
                 tableCards[i].style.transform = `translateY(${bodyRect.height / 2}px) translateX(-${bodyRect.width}px)`;
             }
@@ -358,36 +389,77 @@ function roundWinner(data) {
     console.log(tableCards);
 }
 
-function addDotP(color) {
+function glowCurrentPlayer() {
+    player1Image.classList.remove('player-1-drop-shadow');
+    player2Image.classList.remove('player-2-drop-shadow');
+    player3Image.classList.remove('player-3-drop-shadow');
+    player4Image.classList.remove('player-4-drop-shadow');
+
+    player1Name.classList.remove('player-1-name-drop-shadow');
+    player2Name.classList.remove('player-3-name-drop-shadow');
+    player3Name.classList.remove('player-1-name-drop-shadow');
+    player4Name.classList.remove('player-3-name-drop-shadow');
+
+    if (currentPlayer == 1) {
+        player1Image.classList.add('player-1-drop-shadow');
+        player1Name.classList.add('player-1-name-drop-shadow');
+    } else if (currentPlayer == 2) {
+        player2Image.classList.add('player-2-drop-shadow');
+        player2Name.classList.add('player-3-name-drop-shadow');
+    } else if (currentPlayer == 3) {
+        player3Image.classList.add('player-3-drop-shadow');
+        player3Name.classList.add('player-1-name-drop-shadow');
+    } else if (currentPlayer == 4) {
+        player4Image.classList.add('player-4-drop-shadow');
+        player4Name.classList.add('player-3-name-drop-shadow');
+    }
+}
+
+function addPointsToPlayer(roundWinner, relativeRoundWinner) {
     const dot = document.createElement('div');
-    dot.classList.add(`${color}-dot`);
+
+    if (relativeRoundWinner == 1 || relativeRoundWinner == 3) {
+        dot.classList.add(`green-dot`);
+        myPointAddAudio.currentTime = 0;
+        myPointAddAudio.play();
+
+    }
+    else if (relativeRoundWinner == 2 || relativeRoundWinner == 4) {
+        dot.classList.add(`purple-dot`);
+        enemyPointAddAudio.currentTime = 0;
+        enemyPointAddAudio.play()
+    }
     dot.classList.add('dot');
     dot.classList.add('test-dot');
-    otherTeamDots.appendChild(dot);
 
-    console.log(color);
+    document.querySelector(`#player-${roundWinner}-points`).appendChild(dot);
 
-    // if (color = "purple") {
-    //     yourTeamDots.appendChild(dot);
-    // } else if (color = "green") {
-    //     otherTeamDots.appendChild(dot);
-    // }
 
 }
 
-function addDotG(color) {
+function addScore(color) {
     const dot = document.createElement('div');
     dot.classList.add(`${color}-dot`);
     dot.classList.add('dot');
     dot.classList.add('test-dot');
-    yourTeamDots.appendChild(dot);
-    console.log(color);
 
-    // if (color = "purple") {
-    //     yourTeamDots.appendChild(dot);
-    // } else if (color = "green") {
-    //     otherTeamDots.appendChild(dot);
-    // }
+
+    if (color == "purple") {
+        otherTeamScore++;
+        otherTeamScoreElement.innerText = otherTeamScore.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        });
+
+        otherTeamDots.appendChild(dot);
+    } else if (color == "green") {
+        yourTeamScore++;
+        yourTeamScoreElement.innerText = yourTeamScore.toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        });
+        yourTeamDots.appendChild(dot);
+    }
 
 }
 
@@ -509,7 +581,7 @@ function otherCardMove(player, card) {
         let bodyRect = document.body.getBoundingClientRect();
 
         let middleOfScreen = bodyRect.width / 2;
-        let offSet = (middleOfScreen - rect.x) * -1;
+        let offSet = middleOfScreen - rect.x;
 
         playerPositionY = offSetY(playerCard) - offSetY(playerCard) * 0.6;
 
@@ -586,6 +658,11 @@ function getRelativePlayerNumber(playerNumber, otherPlayer) {
 
 function startNewMatch(data) {
 
+    //glowCurrentPlayer();
+    for (let i = 1; i <= 4; i++) {
+        document.querySelector(`#player-${i}-points`).innerHTML = '';
+    }
+
     if (isGameEnded == true) return;
 
 
@@ -606,10 +683,26 @@ function startNewMatch(data) {
         setTimeout(() => {
             newMatchStarting.style.display = 'none';
             waitingForTrumps.style.display = 'flex';
-            console.log("startNewMatch()");
+
         }, 2000);
     }, 1000);
 
+    if (data.matchWinner == "Team 1") {
+        if (isTeam(playerNumber, 1)) {
+            addScore('green');
+
+
+
+        } else {
+            addScore('purple');
+        }
+    } else if (data.matchWinner == "Team 2") {
+        if (isTeam(playerNumber, 2)) {
+            addScore('green')
+        } else {
+            addScore('purple');
+        }
+    }
 
 }
 
@@ -650,4 +743,9 @@ function isTeam(playerNumber, team) {
             return true;
         }
     }
+}
+
+function clickSound() {
+    clickAudio.currentTime = 0;
+    clickAudio.play();
 }

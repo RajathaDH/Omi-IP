@@ -267,32 +267,32 @@ nav{
 }
 .player-1-name-drop-shadow{
     text-shadow:0 3px 6px #FF00FF;
-    animation:player-name-glow-enemy 2000ms ease infinite;
+    animation:player-name-glow-enemy 500ms ease infinite;
 }
 .player-3-name-drop-shadow{
     text-shadow:0 3px 6px #00631A;
-    animation:player-name-glow-player 2000ms ease infinite;
+    animation:player-name-glow-player 500ms ease infinite;
 }
 .player-1-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #00FFA8;
-    animation: glow-blue 4000ms infinite ease;
+    animation: glow-blue 1000ms infinite ease;
 
 }
 .player-2-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #FFD500;
-    animation: glow-yellow 4000ms infinite ease;
+    animation: glow-yellow 1000ms infinite ease;
 }
 .player-3-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #00FFE5;
-    animation: glow-blue 4000ms infinite ease;
+    animation: glow-blue 1000ms infinite ease;
 }
 .player-4-drop-shadow{
     border-radius: 50%;
     box-shadow:0 3px 6px #FFD500;
-    animation: glow-yellow 4000ms ease-in-out infinite ;
+    animation: glow-yellow 1000ms ease-in-out infinite ;
 }
 .trump{
     
@@ -324,7 +324,7 @@ nav{
 
 .test-dot{
     
-    animation:add-new-dot 3000ms ease infinite ;
+    animation:add-new-dot 3000ms ease ;
 }
 
 /*************************/
@@ -530,10 +530,8 @@ nav{
     0%{
         transform:scale(0);
     }
-    50%{
+    100%{
         transform:scale(1);
-    }100%{
-        transform:scale(0);
     }
 }
 
@@ -612,3 +610,89 @@ nav{
         transform:rotate(0);
     }
 }
+
+.btn-toggle-container {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .btn-toggle-container input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .btn-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .btn-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .btn-toggle-slider {
+    background-color: #FFD500;
+  }
+  
+  input:focus + .btn-toggle-slider {
+    box-shadow: 0 0 1px #FFD500;
+  }
+  
+  input:checked + .btn-toggle-slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  .btn-toggle-slider.round {
+    border-radius: 34px;
+  }
+  
+  .btn-toggle-slider.round:before {
+    border-radius: 50%;
+  }
+
+  .settings-popup{
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      
+  }
+  .setting-row{
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      margin-top:20px ;
+  }
+  .close-button{
+      width: 50%;
+      transition:all 300ms ease;
+      cursor: pointer;
+  }
+  .close-button:hover{
+    transform: scale(1.1);
+  }
+  .close-button-container{
+    display: flex;  
+    justify-content: center;
+      align-items: center;
+  }
