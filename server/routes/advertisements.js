@@ -83,11 +83,11 @@ router.post('/new', checkAuthenticated, upload.single('advertisementImage'), asy
 router.post('/edit/:id', checkAuthenticated, async (req, res) => {
     const advertisementId = req.params.id;
 
-    const { title, details } = req.body;
+    const { title, details, link } = req.body;
 
     let errors = [];
 
-    if(title == '' || details == ''){
+    if(title == '' || details == '' || link == ''){
         errors.push({ msg: 'Please enter all the details.' });
     }
 
@@ -95,12 +95,12 @@ router.post('/edit/:id', checkAuthenticated, async (req, res) => {
         const advertisements = await Advertisement.find({});
 
         if(errors.length > 0){
-            return res.render('advertisements', { advertisements, errors});
+            return res.render('advertisements', { advertisements, errors });
         }
 
         const editedDetails = details.replace(/(?:\r\n|\r|\n)/g, '. ');
 
-        const updatedAdvertisement = await Advertisement.updateOne({ _id: advertisementId }, { title: title, details: editedDetails });
+        const updatedAdvertisement = await Advertisement.updateOne({ _id: advertisementId }, { title: title, details: editedDetails, link: link });
 
         res.redirect('/admins/advertisements');
     } catch(err){

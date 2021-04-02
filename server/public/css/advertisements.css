@@ -155,3 +155,68 @@ input[type='file'] {
 .advertisement-details > form {
     display: none;
 }
+
+.advertisement-details {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.advertisement-details h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.advertisement-details p {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.btn-advertisement {
+    width: 6rem;
+    height: 3rem;
+    font-size: 1rem;
+    color: white;
+    padding: 10px;
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+    margin: 8px 4px;
+    cursor: pointer;
+}
+
+.btn-green {
+    background: green;
+}
+
+.btn-red {
+    background: red;
+}
+
+.advertisement-info {
+    width: 100%;
+}
+
+.edit-form {
+    width: 100%;
+}
+
+.edit-form input, .edit-form textarea {
+    width: 98%;
+    height: 3rem;
+    font-size: 2rem;
+    padding: 10px;
+    border-radius: 1rem;
+    background: #333;
+    border: none;
+    outline: none;
+    color: white;
+    margin: 5px auto;
+}
+
+.edit-form textarea {
+    height: 6rem;
+    resize: none;
+}

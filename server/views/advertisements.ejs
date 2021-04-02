@@ -48,27 +48,30 @@
                     <div class="advertisement-container">
                         <img src="<%= advertisement.advertisementImagePath %>" alt="Advertisement Image">
                         <div class="advertisement-details">
-                            <div id="d<%= advertisement._id %>">
-                                <h3><%= advertisement.title %></h3>
+                            <div id="d<%= advertisement._id %>" class="advertisement-info">
+                                <h1><%= advertisement.title %></h1>
                                 <p><%= advertisement.details %></p>
                                 <p><%= advertisement.link %></p>
                                 <p>Views: <%= advertisement.views %></p>
                                 <p>Clicks: <%= advertisement.clicks %></p>
                             </div>
-                            <form action="/advertisements/edit/<%= advertisement._id %>" method="POST" id="f<%= advertisement._id %>">
+                            <form action="/advertisements/edit/<%= advertisement._id %>" method="POST" id="f<%= advertisement._id %>" class="edit-form">
                                 <div>
                                     <input type="text" name="title" id="title" value="<%= advertisement.title %>">
                                 </div>
                                 <div>
                                     <textarea name="details" id="details" cols="30" rows="10"><%= advertisement.details %></textarea>
                                 </div>
-                                <button type="submit">Save</button>
-                                <button type="button" onclick="cancelEdit(`<%= advertisement._id %>`)">Cancel</button>
+                                <div>
+                                    <input type="text" name="link" id="link" value="<%= advertisement.link %>">
+                                </div>
+                                <button type="submit" class="btn-advertisement btn-green">Save</button>
+                                <button type="button" class="btn-advertisement btn-red" onclick="cancelEdit(`<%= advertisement._id %>`)">Cancel</button>
                             </form>
                             <div>
-                                <button onclick="openEdit(`<%= advertisement._id %>`)">Edit</button>
+                                <button class="btn-advertisement btn-green" onclick="openEdit(`<%= advertisement._id %>`)">Edit</button>
                                 <form action="/advertisements/delete/<%= advertisement._id %>?_method=DELETE" method="POST">
-                                    <button type="submit">Delete</button>
+                                    <button type="submit" class="btn-advertisement btn-red">Delete</button>
                                 </form>
                             </div>
                         </div>
