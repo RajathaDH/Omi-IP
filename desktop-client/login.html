@@ -4,27 +4,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <title>Omi</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Login</title>
 </head>
 <body>
-    <div class="container">
-        <form>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control">
+    <div class="main-container">
+        <div class="login-div" id="login">
+            <div class="logo-div">
+                <img class="logo" src="assets/imgs/logo.png" alt="Logo">
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" class="form-control">
+            <div class="form-header-text">
+                <span class="header-text">Login</span>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+            <form>
+                <div class="input-boxes-div">
+                    <input class="input-boxes" type="text" name="email" id="email" placeholder="E-mail">
+                    <input class="input-boxes" type="text" name="password" id="password" placeholder="Password">
+                </div>
+                <div class="messages"></div>
+                <div class="form-footer">
+                    <button type="submit" class="form-btn">Login</button>
+                </div>
+            </form>
+            <div class="form-footer-text">
+                <a href="register.html">
+                <span class="footer-text">Create account</span>
+                </a>
+            </div>
+        </div>
+        <img class="home-btn" src="assets/imgs/btnHome.png" alt="Home" onclick="window.location='index.html'">
     </div>
 
     <script>
         const fs = require('fs').promises;
+        
         const form = document.querySelector('form');
+        const messagesElement = document.querySelector('.messages');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -58,15 +73,19 @@
             });
 
             const data = await res.json();
-
-            saveToken(data.accessToken);
             
-            window.location = 'home.html';
-        }
+            if (data.status == 'success') {
+                try {
+                    await fs.writeFile('token.txt', data.accessToken);
+                } catch(err) {
+                    console.log(err);
+                }
 
-        async function saveToken(token) {
-            console.log(token);
-            await fs.writeFile('token.txt', token);
+                window.location = 'lobby.html';
+            } else {
+                console.log(data);
+                messagesElement.innerText = data.error;
+            }
         }
     </script>
 </body>

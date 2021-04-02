@@ -2,10 +2,10 @@ const path = require('path');
 const url = require('url');
 const electron = require('electron');
 
-const { app, BrowserWindow, Menu, ipcMain } = electron;
+const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
-let gameWindow;
+//let gameWindow;
 
 app.on('ready', () => {
     mainWindow = new BrowserWindow({
@@ -25,4 +25,6 @@ app.on('ready', () => {
     /*mainWindow.on('closed', () => {
         app.quit();
     });*/
+
+    Menu.setApplicationMenu(null);
 });
