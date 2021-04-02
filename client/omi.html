@@ -55,7 +55,7 @@
                 <img src="assets/imgs/cards/card-back-red.png" alt=""> -->
             </div>
             <div class="settings-icon">
-                <img src="assets/imgs/game-page/settings Icon.png" class="settings-icon-img" alt="">
+                <img src="assets/imgs/game-page/settings Icon.png" class="settings-icon-img" alt="Settings" onclick="openSettings()">
             </div>
         </div>
         <div class="row middle">
@@ -247,7 +247,7 @@
                 <div class="setting-row">
                     <div class="setting-column">Settings</div>
                     <div class="setting-column close-button-container">
-                        <img src="assets/imgs/room-page/Close Button.png" class="close-button" alt="">
+                        <img src="assets/imgs/room-page/Close Button.png" class="close-button" alt="Close" onclick="closeSettings()">
                     </div>
                 </div>
 
@@ -255,7 +255,7 @@
                     <div class="setting-column">Music</div>
                     <div class="setting-column">
                         <label class="btn-toggle-container">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" checked onchange="toggleMusic()">
                             <span class="btn-toggle-slider round"></span>
                         </label>
                     </div>
@@ -265,7 +265,7 @@
                     <div class="setting-column">Sound Effects</div>
                     <div class="setting-column">
                         <label class="btn-toggle-container">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" checked onchange="toggleSoundEffects()">
                             <span class="btn-toggle-slider round"></span>
                         </label>
                     </div>

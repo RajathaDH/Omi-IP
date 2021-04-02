@@ -90,6 +90,7 @@ const player1Image = document.querySelector('#player-1-image');
 const player2Image = document.querySelector('#player-2-image');
 const player3Image = document.querySelector('#player-3-image');
 const player4Image = document.querySelector('#player-4-image');
+const settingsPopup = document.querySelector('#settingsPopup');
 
 const player1Points = document.querySelector('#player-1-points');
 const player2Points = document.querySelector('#player-2-points');
@@ -103,8 +104,14 @@ const myPointAddAudio = new Audio('assets/sounds/points-add.mp3');
 const enemyPointAddAudio = new Audio('assets/sounds/enemy-point-sound.mp3');
 const errorCardAudio = new Audio('assets/sounds/error-card.mp3');
 
-// backgroundAudio.play();
-// backgroundAudio.loop = true;
+backgroundAudio.volume = 0.2;
+clickAudio.volume = 0.2;
+myPointAddAudio.volume = 0.2;
+enemyPointAddAudio.volume = 0.2;
+errorCardAudio.volume = 0.2;
+
+backgroundAudio.play();
+backgroundAudio.loop = true;
 
 /*********************************************/
 let matchNumber = 1;
@@ -118,6 +125,9 @@ let isGameEnded = false;
 let matchCount = 0;
 let yourTeamScore = 0;
 let otherTeamScore = 0;
+
+let musicEnabled = true;
+let soundEffectsEnabled = true;
 
 socket.on('connection-error', data => {
     console.log(data);
@@ -748,4 +758,41 @@ function isTeam(playerNumber, team) {
 function clickSound() {
     clickAudio.currentTime = 0;
     clickAudio.play();
+}
+
+function openSettings() {
+    popupDiv.style.display = 'flex';
+    settingsPopup.style.display = 'flex';
+}
+
+function closeSettings() {
+    popupDiv.style.display = 'none';
+    settingsPopup.style.display = 'none';
+}
+
+function toggleMusic() {
+    if (musicEnabled) {
+        musicEnabled = false;
+        backgroundAudio.pause();
+    } else {
+        musicEnabled = true;
+        backgroundAudio.currentTime = 0;
+        backgroundAudio.play();
+    }
+}
+
+function toggleSoundEffects() {
+    if (soundEffectsEnabled) {
+        soundEffectsEnabled = false;
+        clickAudio.muted = true;
+        myPointAddAudio.muted = true;
+        enemyPointAddAudio.muted = true;
+        errorCardAudio.muted = true;
+    } else {
+        soundEffectsEnabled = true;
+        clickAudio.muted = false;
+        myPointAddAudio.muted = false;
+        enemyPointAddAudio.muted = false;
+        errorCardAudio.muted = false;
+    }
 }
