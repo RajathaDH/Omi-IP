@@ -26,7 +26,7 @@
                     <div class="form-left">
                         <input type="text" name="title" id="title" placeholder="Title">
                         <textarea name="details" id="details" cols="30" rows="10" placeholder="Advertisement Details"></textarea>
-                        <input type="text" name="link" id="link" placeholder="Link">
+                        <input type="url" name="link" id="link" placeholder="Link">
                         <label class="upload-label">
                             Upload Image<input type="file" name="advertisementImage" id="image" accept="image/*" onchange="previewImage(event)">
                         </label>
@@ -63,7 +63,7 @@
                                     <textarea name="details" id="details" cols="30" rows="10"><%= advertisement.details %></textarea>
                                 </div>
                                 <div>
-                                    <input type="text" name="link" id="link" value="<%= advertisement.link %>">
+                                    <input type="url" name="link" id="link" value="<%= advertisement.link %>">
                                 </div>
                                 <button type="submit" class="btn-advertisement btn-green">Save</button>
                                 <button type="button" class="btn-advertisement btn-red" onclick="cancelEdit(`<%= advertisement._id %>`)">Cancel</button>
