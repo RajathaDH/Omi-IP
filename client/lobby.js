@@ -197,3 +197,7 @@ function logout() {
 
     window.location = 'index.html';
 }
+
+function downloadGame() {
+    window.open(`${BASE_URL}/downloads/omi/windows`);
+}
