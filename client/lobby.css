@@ -215,6 +215,8 @@ body{
 #room-id{
     padding: 15px 25px 15px 25px;
     border-radius: 50px;
+    border: none;
+    outline: none;
 }
 
 .join-btn{
@@ -305,6 +307,10 @@ body{
     justify-content: center;
     align-items: center;
     width: auto;
+}
+
+#roomError {
+    color: white;
 }
 
 @keyframes fade-in{

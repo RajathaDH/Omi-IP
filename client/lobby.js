@@ -7,6 +7,7 @@ const scoreElement = document.querySelector('#score');
 const createRoomPopup = document.querySelector('.creating-room');
 const leaderboardElement = document.querySelector('#leaderboard');
 const advertisementElement = document.querySelector('#advertisement');
+const roomErrorElement = document.querySelector('#roomError');
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -32,9 +33,15 @@ joinForm.addEventListener('submit', e => {
 
     const room = roomId.value;
 
-    setRoom(room);
+    if (room == '') {
+        roomErrorElement.innerText = 'Enter a Room ID';
+    } else if (room.length != 5) {
+        roomErrorElement.innerText = 'Invalid Room ID';
+    } else {
+        setRoom(room);
 
-    window.location = 'omi.html';
+        window.location = 'omi.html';
+    }
 });
 
 function getToken() {
@@ -101,8 +108,6 @@ async function fetchAdvertisement() {
 function createAdvertisement(advertisement) {
     if (advertisement == null) return;
 
-    console.log(advertisement);
-
     const advertisementImg = document.createElement('img');
     advertisementImg.src = `${BASE_URL}/uploads/advertisement-photos/${advertisement.imageName}`;
     advertisementElement.appendChild(advertisementImg);
@@ -134,7 +139,6 @@ function createRoom() {
 async function createLeaderboard() {
     const leaderboard = await fetchLeaderboard();
     leaderboardElement.innerHTML = '';
-    console.log(leaderboard);
 
     leaderboard.forEach(player => {
         const playerDiv = document.createElement('div');
@@ -177,7 +181,6 @@ async function main() {
 main();
 
 function setRoom(room) {
-    console.log('saving room');
     const d = new Date();
     d.setTime(d.getTime() + 60*60*1000);
     const expires = 'expires='+ d.toUTCString();
@@ -186,4 +189,11 @@ function setRoom(room) {
 
 function deleteRoom() {
     document.cookie = 'omi-room=;expires=Thu 01 Jan 1970 00:00:00UTC;path=/;';
+}
+
+function logout() {
+    // clear token
+    document.cookie = 'omi-token=;expires=Thu 01 Jan 1970 00:00:00UTC;path=/;';
+
+    window.location = 'index.html';
 }

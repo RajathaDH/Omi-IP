@@ -13,12 +13,12 @@
     <div class="room-main-div">
         <div class="room-navbar">
             <div class="nav-items">
-                <div class="download-btn space">Download PC App</div>
+                <!-- <div class="download-btn space">Download PC App</div> -->
                 <div class="player-score-div space">
-                    <img style="height: 90%;" class="player-score" src="assets/imgs/room-page/Group 4 new.png" alt="">
+                    <img style="height: 90%;" class="player-score" src="assets/imgs/room-page/Group 4 new.png" alt="Score">
                     <span class="score" id="score">0</span>
                 </div>
-                <img style="height: 50px;" class="logout-btn space" src="assets/imgs/room-page/Group 6.png" alt="">
+                <img style="height: 50px;" class="logout-btn space" src="assets/imgs/room-page/Group 6.png" alt="Logout" onclick="logout()">
             </div>
 
         </div>
@@ -45,6 +45,7 @@
             </div>
             <form id="joinForm">
                 <input id="room-id" type="text" placeholder="Room ID">
+                <div id="roomError"></div>
                 <button type="submit" class="join-btn">Join</button>
             </form>
         </div>
