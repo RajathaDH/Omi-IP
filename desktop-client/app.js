@@ -43,8 +43,8 @@ myPointAddAudio.volume = 0.2;
 enemyPointAddAudio.volume = 0.2;
 errorCardAudio.volume = 0.2;
 
-//backgroundAudio.play();
-//backgroundAudio.loop = true;
+backgroundAudio.play();
+backgroundAudio.loop = true;
 
 /*********************************************/
 let matchNumber = 1;
@@ -530,6 +530,7 @@ function offSetY(playerCard) {
     let bodyRect = document.body.getBoundingClientRect();
     let middleOfScreenY = bodyRect.height / 2;
     let offSetY = middleOfScreenY - rect.y;
+
     return offSetY;
 }
 
@@ -541,39 +542,26 @@ function otherCardMove(player, card) {
     let playerPositionX;
 
     if (player == 2) {
-        playerCard = opponent1Hand.children[Math.floor(Math.random() * opponent1Hand.children.length)];
-        playerPositionX = offSetX(playerCard) - offSetX(playerCard) * 0.4;
+        playerCard = opponent1Hand.children[8 - roundCount];
         playerCard.style.transition = "transform 0.5s linear 0s";
-        playerCard.style.transform = `translatey(${offSetY(playerCard)}px) translatex(${playerPositionX}px) rotateX(180deg) rotateY(180deg) rotateZ(0deg)`;
+        playerCard.style.transform = `translatey(${offSetY(playerCard)}px) translatex(-150%) rotateX(180deg) rotateY(180deg) rotateZ(0deg)`;
         setTimeout(() => {
             playerCard.src = "assets/imgs/cards/" + cardNumber + ".png";
         }, 250);
 
     } else if (player == 3) {
-        playerCard = teammateHand.children[Math.floor(Math.random() * teammateHand.children.length)];
-        console.log(playerCard)
-
-        let rect = playerCard.getBoundingClientRect();
-        let bodyRect = document.body.getBoundingClientRect();
-
-        let middleOfScreen = bodyRect.width / 2;
-        let offSet = middleOfScreen - rect.x;
-
-        playerPositionY = offSetY(playerCard) - offSetY(playerCard) * 0.6;
-
+        playerCard = teammateHand.children[8 - roundCount];
         playerCard.style.transition = "transform 0.5s linear 0s";
-        playerCard.style.transform = `translatey(${playerPositionY}px) translateX(${offSet * 2}px) translateX(-50%) rotatey(180deg) scale(1.45)`;
+        playerCard.style.transform = `translatey(150%) translateX(${offSetX(playerCard)}px) translateX(-50%) rotatey(180deg) scale(1.45)`;
 
         setTimeout(() => {
             playerCard.src = "assets/imgs/cards/" + cardNumber + ".png";
         }, 250);
 
     } else if (player == 4) {
-        playerCard = opponent2Hand.children[Math.floor(Math.random() * opponent2Hand.children.length)];
-
-        playerPositionX = offSetX(playerCard) - offSetX(playerCard) * 0.5;
+        playerCard = opponent2Hand.children[8 - roundCount];
         playerCard.style.transition = "transform 0.5s linear 0s";
-        playerCard.style.transform = `translatey(${offSetY(playerCard)}px) translatex(${playerPositionX}px) rotatey(180deg) `;
+        playerCard.style.transform = `translatey(${offSetY(playerCard)}px) translatex(150%) rotatey(180deg) `;
         setTimeout(() => {
             playerCard.src = "assets/imgs/cards/" + cardNumber + ".png";
         }, 250);
