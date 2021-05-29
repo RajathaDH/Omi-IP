@@ -6,19 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="lobby.css">
-    <title>Document</title>
+    <link rel="shortcut icon" href="assets/imgs/headerLogo.ico" type="image/x-icon">
+    <title>Lobby</title>
 </head>
 
 <body>
+
+
+
+
     <div class="room-main-div">
+
+        <div class="settings-icon">
+            <img src="assets/imgs/game-page/settings Icon.png" class="settings-icon-img" alt="Settings"
+                onclick="openSettings()">
+        </div>
         <div class="room-navbar">
             <div class="nav-items">
                 <div class="download-btn space" onclick="downloadGame()">Download PC App</div>
                 <div class="player-score-div space">
-                    <img style="height: 90%;" class="player-score" src="assets/imgs/room-page/Group 4 new.png" alt="Score">
+                    <img style="height: 90%;" class="player-score" src="assets/imgs/room-page/Group 4 new.png"
+                        alt="Score">
                     <span class="score" id="score">0</span>
                 </div>
-                <img style="height: 50px;" class="logout-btn space" src="assets/imgs/room-page/Group 6.png" alt="Logout" onclick="logout()">
+                <img style="height: 50px;" class="logout-btn space" src="assets/imgs/room-page/Group 6.png" alt="Logout"
+                    onclick="logout()">
             </div>
 
         </div>
@@ -29,7 +41,8 @@
             <div class="container-btns small-btn" onclick="popupLeaderboard();"><span
                     class="container-texts">Leaderboard</span></div>
             <div class="container-btns" onclick="popupJoinParty()"><span class="container-texts">Join Party</span></div>
-            <div class="container-btns small-btn" onclick="createRoom()"><span class="container-texts">Create Party</span></div>
+            <div class="container-btns small-btn" onclick="createRoom()"><span class="container-texts">Create
+                    Party</span></div>
         </div>
         <div class="room-addbar">
             <div class="addbar" id="advertisement"></div>
@@ -38,7 +51,7 @@
     <div class="room-popups">
         <div class="mid-popup-div" id="join-party-div">
             <div class="mid-popup-head-div">
-                <span class="popup-text" id="join-party-text" >Join Party</span>
+                <span class="popup-text" id="join-party-text">Join Party</span>
                 <div class="close-btn" onclick="popoutDiv()">
                     <img src="assets/imgs/room-page/Close Button.png" alt="Close">
                 </div>
@@ -60,9 +73,31 @@
 
             <div id="leaderboard"></div>
         </div>
+
+        <div class="mid-popup-div" id="download-div">
+            <div class="mid-popup-head-div">
+                <span class="popup-text">Download</span>
+
+                <div class="close-btn" onclick="popoutDiv()">
+                    <img src="assets/imgs/room-page/Close Button.png" alt="Close">
+                </div>
+            </div>
+            <div class="os-buttons-container">
+
+            </div>
+            <button class="os-buttons" id="windows" onclick="downloadFor('windows')">Windows</button>
+            <button class="os-buttons" id="mac" onclick="downloadFor('mac')">Mac</button>
+            <button class="os-buttons" id="linux" onclick="downloadFor('linux')">Linux</button>
+
+        </div>
+
+
+
     </div>
 
-    <div class="creating-room"><p>Creating Room....</p></div>
+    <div class="creating-room">
+        <p>Creating Room....</p>
+    </div>
     <script src="lobby.js"></script>
 </body>
 

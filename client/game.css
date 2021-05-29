@@ -198,11 +198,12 @@ nav{
 }
 .settings-icon{
     width: 20%;
-    /* background-color: chocolate; */
+    
     display: flex;
     flex-direction:column;
     justify-content: center;
     align-items:center;
+
     /*transform:translateX(-50%);*/
     
 }

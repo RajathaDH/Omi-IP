@@ -8,25 +8,33 @@ const createRoomPopup = document.querySelector('.creating-room');
 const leaderboardElement = document.querySelector('#leaderboard');
 const advertisementElement = document.querySelector('#advertisement');
 const roomErrorElement = document.querySelector('#roomError');
+const downloadPopupDiv = document.querySelector('#download-div');
+
+const backgroundAudio = new Audio('assets/sounds/lobby-page.mp3');
+backgroundAudio.volume = 0.2;
+
+backgroundAudio.play();
+backgroundAudio.loop = true;
 
 const BASE_URL = 'https://omi-ip.herokuapp.com';
 
-function popupLeaderboard(){
+function popupLeaderboard() {
     popupDiv.style.display = 'flex';
     leaderboardDiv.style.display = 'flex';
     createLeaderboard();
 }
 
-function popupJoinParty(){
+function popupJoinParty() {
     popupDiv.style.display = 'flex';
     joinPartyDiv.style.display = 'flex';
 }
 
-function popoutDiv(){
+function popoutDiv() {
     popupDiv.style.display = 'none';
     leaderboardDiv.style.display = 'none';
     joinPartyDiv.style.display = 'none';
 }
+
 
 joinForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -48,16 +56,16 @@ function getToken() {
     const cookieName = 'omi-token' + '=';
     const cookie = decodeURIComponent(document.cookie);
     const cookieArray = cookie.split(';');
-    for(let i = 0; i < cookieArray.length; i++) {
+    for (let i = 0; i < cookieArray.length; i++) {
         let c = cookieArray[i];
-        while(c.charAt(0) == ' ') {
+        while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
         if (c.indexOf(cookieName) == 0) {
             return c.substring(cookieName.length, c.length);
         }
     }
-    
+
     return "";
 }
 
@@ -73,9 +81,9 @@ async function fetchScore(dbId) {
     try {
         const result = await fetch(`${BASE_URL}/scores/user/${dbId}`);
         const data = await result.json();
-        
+
         return data.score;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         return 0;
     }
@@ -87,7 +95,7 @@ async function fetchLeaderboard() {
         const data = await result.json();
 
         return data.leaderboard;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         return [];
     }
@@ -99,7 +107,7 @@ async function fetchAdvertisement() {
         const data = await result.json();
 
         return data.advertisement;
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         return null;
     }
@@ -182,8 +190,8 @@ main();
 
 function setRoom(room) {
     const d = new Date();
-    d.setTime(d.getTime() + 60*60*1000);
-    const expires = 'expires='+ d.toUTCString();
+    d.setTime(d.getTime() + 60 * 60 * 1000);
+    const expires = 'expires=' + d.toUTCString();
     document.cookie = 'omi-room' + '=' + room + ';' + expires + ';path=/';
 }
 
@@ -199,5 +207,12 @@ function logout() {
 }
 
 function downloadGame() {
-    window.open(`${BASE_URL}/downloads/omi/windows`);
+
+    downloadPopupDiv.style.display = "flex";
+    popupDiv.style.display = "flex";
+
+}
+
+function downloadFor(os) {
+    window.open(`${BASE_URL}/downloads/omi/${os}`);
 }

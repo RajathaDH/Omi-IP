@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/imgs/headerLogo.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>Register</title>
 </head>
+
 <body>
     <div class="main-container">
+        <div class="settings-icon">
+            <img src="assets/imgs/game-page/settings Icon.png" class="settings-icon-img" alt="Settings"
+                onclick="openSettings()">
+        </div>
+
         <div class="login-div">
             <div class="logo-div">
                 <img class="logo" src="assets/imgs/logo.png" alt="Logo">
@@ -29,7 +37,7 @@
             </form>
             <div class="form-footer-text">
                 <a href="login.html">
-                <span class="footer-text">Already have an Account? </span>
+                    <span class="footer-text">Already have an Account? </span>
                 </a>
             </div>
         </div>
@@ -39,6 +47,12 @@
     <script>
         const form = document.querySelector('form');
         const messagesElement = document.querySelector('.messages');
+
+        const backgroundAudio = new Audio('assets/sounds/lobby-page.mp3');
+        backgroundAudio.volume = 0.2;
+
+        backgroundAudio.play();
+        backgroundAudio.loop = true;
 
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -95,4 +109,5 @@
         }
     </script>
 </body>
+
 </html>
