@@ -18,8 +18,8 @@
             </div>
             <form>
                 <div class="input-boxes-div">
-                    <input class="input-boxes" type="text" name="email" id="email" placeholder="E-mail">
-                    <input class="input-boxes" type="text" name="password" id="password" placeholder="Password">
+                    <input class="input-boxes" type="email" name="email" id="email" placeholder="E-mail">
+                    <input class="input-boxes" type="password" name="password" id="password" placeholder="Password">
                 </div>
                 <div class="messages"></div>
                 <div class="form-footer">
@@ -58,7 +58,15 @@
         });
 
         function validateData(user) {
-            return true
+            if (!user.email) {
+                messagesElement.innerText = 'Enter a valid email';
+                return false;
+            } else if (!user.password) {
+                messagesElement.innerText = 'Enter password';
+                return false;
+            } else {
+                return true;
+            }
         }
 
         async function logUser(user) {
@@ -76,8 +84,7 @@
                 setCookie(data.accessToken);
                 window.location = 'lobby.html';
             } else {
-                console.log(data);
-                messagesElement.innerText = data.error;
+                messagesElement.innerText = data.message;
             }
         }
 

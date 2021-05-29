@@ -6,27 +6,24 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
-
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: hashedPassword 
-    });
-
     try{
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) return res.json({ status: 'error', message: 'Email is already taken' });
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const user = new User({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashedPassword 
+        });
+
         const newUser = await user.save();
-        console.log(newUser);
-        res.json({
-            status: 'success'
-        });
+
+        res.json({ status: 'success' });
     }
-    catch(er){
-        console.log(er);
-        res.json({
-            status: 'error'
-        });
+    catch (err) {
+        res.json({ status: 'error', message: 'Internal error' });
     }
 });
 
@@ -34,7 +31,7 @@ router.post('/login', async (req, res) => {
     try{
         const user = await User.findOne({ email: req.body.email });
 
-        if(!user) return res.json({ status: 'error', error: "Invalid Email"});
+        if(!user) return res.json({ status: 'error', message: "Invalid Email"});
 
         if(await bcrypt.compare(req.body.password, user.password)){
             const playerData = {
@@ -44,18 +41,14 @@ router.post('/login', async (req, res) => {
             
             const accessToken = jwt.sign(playerData, process.env.JWT_TOKEN); //encrypt the player data
 
-            return res.json({
-                status: "success",
-                accessToken
-            });
+            return res.json({ status: "success", accessToken });
         }
         else{   
-            return res.json({ status: 'error', error: "Incorrect password" });
+            return res.json({ status: 'error', message: "Incorrect password" });
         }
     }
-    catch(er){
-        console.log(er);
-        res.json({ status: 'error', error: 'Internal error' });
+    catch (err) {
+        res.json({ status: 'error', message: 'Internal error' });
     }
 });
 
