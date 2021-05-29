@@ -62,7 +62,7 @@ app.use('/scores', scoreRouter);
 // web server
 const server = http.createServer(app);
 
-// websecket server
+// websocket server
 const io = socketio(server, {
     cors: {
         origin: '*'

@@ -56,7 +56,7 @@ router.post('/login/pc', async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
 
-        if(!user) return res.json({ status: 'error', error: "Invalid Email"});
+        if(!user) return res.json({ status: 'error', message: "Invalid Email"});
 
         if(await bcrypt.compare(req.body.password, user.password)){
             const playerData = {
@@ -72,11 +72,10 @@ router.post('/login/pc', async (req, res) => {
             });
         }
         else{   
-            return res.json({ status: 'error', error: "Incorrect password" });
+            return res.json({ status: 'error', message: "Incorrect password" });
         }
     } catch (err) {
-        console.log(err);
-        res.json({ status: 'error', error: 'Internal error' });
+        res.json({ status: 'error', message: 'Internal error' });
     }
 });
 

@@ -106,7 +106,7 @@ async function fetchAdvertisement() {
 }
 
 function createAdvertisement(advertisement) {
-    if (advertisement == null) return;
+    if (!advertisement) return;
 
     const advertisementImg = document.createElement('img');
     advertisementImg.src = `${BASE_URL}/uploads/advertisement-photos/${advertisement.imageName}`;
