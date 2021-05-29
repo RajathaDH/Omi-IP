@@ -54,8 +54,8 @@ function clientConnect(io, socket, user) {
         if (games.get(room).gameStarted == false && io.sockets.adapter.rooms.get(room).size < 4) {
             // check if player is already in the room
             for (const player of games.get(room).players.values()) {
-                if (playerId == player.id) {
-                    socket.emit('room-error', { messsage: 'Player already in the room '});
+                if (String(playerId) == String(player.id)) {
+                    socket.emit('room-error', { message: 'Player already in the room '});
                     return;
                 }
             }

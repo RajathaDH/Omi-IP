@@ -130,13 +130,15 @@ router.delete('/delete/:id', checkAuthenticated, async (req, res) => {
 router.get('/random', async (req, res) => {
     try {
         const randomAdvertisement = await Advertisement.find({}).sort({ views: 1 }).limit(1);
+
+        if (randomAdvertisement.length == 0) return res.json({ advertisement: null });
         
         const updatedAdvertisement = await Advertisement.updateOne({ _id: randomAdvertisement[0]._id }, { views: randomAdvertisement[0].views + 1 });
 
         res.json({ advertisement: randomAdvertisement[0] });
     } catch(err) {
         console.log(err);
-        res.json({ advertisement: {} });
+        res.json({ advertisement: null });
     }
 });
 
