@@ -72,7 +72,7 @@
         }
 
         async function logUser(user) {
-            const res = await fetch('http://localhost:3000/users/login/pc', {
+            const res = await fetch('https://omi-ip.herokuapp.com/users/login/pc', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

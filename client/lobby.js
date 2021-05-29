@@ -9,7 +9,7 @@ const leaderboardElement = document.querySelector('#leaderboard');
 const advertisementElement = document.querySelector('#advertisement');
 const roomErrorElement = document.querySelector('#roomError');
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://omi-ip.herokuapp.com';
 
 function popupLeaderboard(){
     popupDiv.style.display = 'flex';
