@@ -1,3 +1,10 @@
+const table = document.querySelector('#table');
+
+const trumpCardImg = document.querySelector('#trumpCard');
+// const player1Card = document.querySelector('#player-1-card');
+// const player2Card = document.querySelector('#player-2-card');
+// const player3Card = document.querySelector('#player-3-card');
+// const player4Card = document.querySelector('#player-4-card');
 const popupDiv = document.querySelector('.popups');
 const playerConnectDiv = document.querySelector('#playerConnectInner');
 const trumpCallDiv = document.querySelector('#select-trumps-div');
@@ -6,6 +13,10 @@ const gameDetails = document.querySelector('.game-details');
 const fourRandomCards = document.querySelector('.four-trump-cards');
 const currentTrump = document.querySelector('#trump-of-game');
 const player1Cards = document.querySelector("#player-1-cards");
+const playerOneMidCard = document.querySelector("#mid-card-1");
+const playerTwoMidCard = document.querySelector("#mid-card-2");
+const playerThreeMidCard = document.querySelector("#mid-card-3");
+const playerFourMidCard = document.querySelector("#mid-card-4");
 const player1Name = document.querySelector("#player-1-name");
 const player2Name = document.querySelector("#player-2-name");
 const player3Name = document.querySelector("#player-3-name");
@@ -29,6 +40,11 @@ const player2Image = document.querySelector('#player-2-image');
 const player3Image = document.querySelector('#player-3-image');
 const player4Image = document.querySelector('#player-4-image');
 const settingsPopup = document.querySelector('#settingsPopup');
+
+const player1Points = document.querySelector('#player-1-points');
+const player2Points = document.querySelector('#player-2-points');
+const player3Points = document.querySelector('#player-3-points');
+const player4Points = document.querySelector('#player-4-points');
 
 /********SOUNDS******/
 const backgroundAudio = new Audio('assets/sounds/game-page-bg.mp3');
@@ -58,6 +74,7 @@ let isGameEnded = false;
 let matchCount = 0;
 let yourTeamScore = 0;
 let otherTeamScore = 0;
+let roundCount = 1;
 
 let musicEnabled = true;
 let soundEffectsEnabled = true;
@@ -65,8 +82,8 @@ let soundEffectsEnabled = true;
 const fs = require('fs').promises;
 
 let callTrump = () => {
-    console.log('Calling Trump');
-}
+    
+};
 
 async function initializeGame() {
     let token = '';
@@ -98,55 +115,54 @@ async function initializeGame() {
         window.location = 'login.html';
         connectionError(data);
     });
-
+    
     // sends any errors that can occur while joining room (room full, already in the room)
     socket.on('room-error', data => {
         console.log(data);
         roomError(data);
-        setTimeout(() => {
-            window.location = 'lobby.html';
-        }, 2000);
     });
-
+    
     socket.on('new-room', data => {
         console.log(data);
         inviteYourFriends.style.display = "flex";
         inviteYourFriends.innerHTML = `Room ID : <span>${data.roomId}</span>`
     });
-
+    
     // sends all the players currently in the room when a new player joins
     socket.on('player-connect', data => {
         playerConnect(data);
-
+    
         if (data.players.length == 4) {
             matchPlayers = data.players;
         }
     });
-
+    
     socket.on('player-disconnect', () => {
         //window.location.replace('http://localhost:5000');
         playerDisconnected();
         console.log('Player disconnected');
     });
-
+    
     // sends current players number when player joins
     socket.on('player-number', data => {
         playerNumber = data;
         console.log(data);
     });
-
+    
     socket.on('game-started', () => {
         startGame();
         glowCurrentPlayer();
     });
-
+    
     // sends the players cards when at the start of each match
     socket.on('player-hand', hand => {
         playerHand = hand;
-
+    
+        roundCount = 1;
+    
         createHands();
     });
-
+    
     // sends the player number and card when someone plays a card
     socket.on('played-card', data => {
         currentPlayer = data.player + 1;
@@ -163,19 +179,21 @@ async function initializeGame() {
         otherCardMove(getRelativePlayerNumber(playerNumber, data.player), data.card.imageName.replace('.png', ''));
         glowCurrentPlayer();
     });
-
+    
     // your turn to call trumps
     socket.on('call-trump', () => {
         popupDiv.style.display = 'flex';
         waitingForTrumps.style.display = 'none';
-
+    
+    
         setTimeout(() => {
             trumpCallDiv.style.display = 'flex';
             waitingForTrumps.style.display = 'none';
             showRandomCards();
         }, 4000);
+    
     });
-
+    
     // sends the player number and trumps when someone calls trumps
     socket.on('trump-card', data => {
         console.log(data);
@@ -186,16 +204,16 @@ async function initializeGame() {
         createHand(playerHand);
         glowCurrentPlayer();
     });
-
+    
     // sends the player who won the current round and current points (when 4 cards are on the table)
     socket.on('round-winner', data => {
         currentPlayer = data.roundWinner;
         console.log(data);
         roundWinner(data);
         glowCurrentPlayer();
-
+    
     });
-
+    
     // sends the winner of the current match at the end
     socket.on('match-winner', data => {
         console.log(data);
@@ -204,31 +222,31 @@ async function initializeGame() {
             isGameEnded = true;
         }
         startNewMatch(data);
-
+    
     });
-
+    
     // sends the current scores of the players at the end of the match
     socket.on('match-scores', data => {
         console.log(data);
     });
-
+    
     socket.on('game-finished', data => {
         console.log(data);
         isGameEnded = true;
-
+    
         //game finished eka call wenne startNewMatch() eka call unata passe;
         gameFinish(data);
     });
 
     function createHand(hand) {
         player1Cards.innerHTML = '';
-
+    
         hand.forEach(card => {
             const img = document.createElement('img');
             img.src = `assets/imgs/cards/${card.imageName}`;
-
+    
             img.addEventListener('click', () => {
-
+    
                 if (playerNumber == currentPlayer) {
                     if (validateCard(card)) {
                         socket.emit('play-card', card);
@@ -266,6 +284,7 @@ function connectionError(data) {
     connectionErrorElement.style.display = 'flex';
     waitingForTrumps.style.display = 'none';
     connectionErrorElement.innerText = data.error;
+
 }
 
 function roomError(data) {
@@ -273,6 +292,7 @@ function roomError(data) {
     roomErrorElement.style.display = 'flex';
     waitingForTrumps.style.display = 'none';
     roomErrorElement.innerText = data.message;
+
 }
 
 function playerDisconnected() {
@@ -361,6 +381,8 @@ function roundWinner(data) {
         tableCards = [];
         console.log(tableCards);
     }, 3000);
+
+    roundCount++;
 
     console.log(tableCards);
 }
@@ -477,8 +499,6 @@ function startGame() {
     player2Name.innerText = matchPlayers[1].playerName;
     player3Name.innerText = matchPlayers[2].playerName;
     player4Name.innerText = matchPlayers[3].playerName;
-    console.log(matchPlayers[0].playerName);
-
 }
 function showRandomCards() {
     fourRandomCards.style.display = 'flex';
@@ -503,9 +523,7 @@ function playerCardMove(img, card) {
                             translateX(-50%) scale(1.2)
                             rotate(${offSet > 0 ? '-' : ''}180deg)`;
 
-    console.log(playerHand);
     playerHand = playerHand.filter(playerCard => playerCard.name != card.name);
-    console.log(playerHand);
 }
 
 function invalidCard(img) {
@@ -568,6 +586,10 @@ function otherCardMove(player, card) {
     }
     tableCards.push(playerCard);
 }
+/*
+otherCardMove(2, 'S10');
+otherCardMove(3, 'S10');
+otherCardMove(4, 'S10');*/
 
 function createHands() {
     opponent1Hand.innerHTML = '';
@@ -679,6 +701,14 @@ function gameFinish(data) {
     }
 
 
+}
+
+function getTeam(playerNumber) {
+    if (playerNumber == 1 || playerNumber == 3) {
+        return 1;
+    } else if (playerNumber == 2 || playerNumber == 4) {
+        return 2;
+    }
 }
 
 function isTeam(playerNumber, team) {
