@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="shortcut icon" href="/assets/imgs/headerLogo.ico" type="image/x-icon">
     <title>Admin Login</title>
 </head>
 <body>
@@ -22,7 +23,7 @@
                     <input class="input-boxes" type="password" name="password" id="password" placeholder="Password">
                 </div>
                 <% if(messages.error) { %>
-                    <div>
+                    <div class="messages">
                         <%= messages.error %>
                     </div>
                 <% } %>
