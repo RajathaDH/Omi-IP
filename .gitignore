@@ -4,3 +4,4 @@ server/public/uploads
 build
 release-builds
 server/downloads
+desktop-client/assets

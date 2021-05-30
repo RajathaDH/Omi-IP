@@ -56,6 +56,36 @@
 
                 <p>team09@omi.lk</p>
             </div>
+
+            <div class="popup settings-popup" id="settingsPopup">
+                <div class="setting-row">
+                    <div class="setting-column">Settings</div>
+                    <div class="setting-column close-button-container">
+                        <img src="assets/imgs/room-page/Close Button.png" class="close-button" alt="Close"
+                            onclick="closeSettings()">
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Music</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleMusic()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Sound Effects</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleSoundEffects()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

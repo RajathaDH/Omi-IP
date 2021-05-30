@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="welcome.css">
     <script src="welcome.js" defer></script>
-    <title>Home Page</title>
+    <title>Welcome to Omi</title>
+    <link rel="shortcut icon" href="assets/imgs/headerLogo.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -30,20 +31,60 @@
             <div class="black-bar black-bar-bottom"></div>
         </div>
 
+        <div class="settings-icon">
+            <img src="assets/imgs/game-page/settings Icon.png" class="settings-icon-img" alt="Settings"
+                onclick="openSettings()">
+        </div>
+
+
+
         <div class="popup-container">
             <div id="aboutUs" class="popup">
-                <div  class="popup-header">
-                    <img src="assets/imgs/btnClose.png" alt="Close" onclick="closeAboutUs()">
+                <div class="popup-header">
+                    <h1>We are Team 09</h1><img src="assets/imgs/btnClose.png" alt="Close" onclick="closeAboutUs()">
                 </div>
-                <h1>We are Team 09</h1>
+                <div class="desc">
+
+                </div>
             </div>
 
             <div id="advertise" class="popup">
                 <div class="popup-header">
-                    <img src="assets/imgs/btnClose.png" alt="Close" onclick="closeAdvertise()">
+                    <h1>Connect with us to advertise</h1> <img src="assets/imgs/btnClose.png" alt="Close"
+                        onclick="closeAdvertise()">
                 </div>
-                <h1>Connect with us to advertise</h1>
+
                 <p>team09@omi.lk</p>
+            </div>
+
+            <div class="popup settings-popup" id="settingsPopup">
+                <div class="setting-row">
+                    <div class="setting-column">Settings</div>
+                    <div class="setting-column close-button-container">
+                        <img src="assets/imgs/room-page/Close Button.png" class="close-button" alt="Close"
+                            onclick="closeSettings()">
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Music</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleMusic()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Sound Effects</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleSoundEffects()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

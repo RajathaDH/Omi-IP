@@ -42,17 +42,54 @@
             </div>
         </div>
         <img class="home-btn" src="assets/imgs/btnHome.png" alt="Home" onclick="window.location='index.html'">
+
+        <div class="popup-container">
+            <div class="popup settings-popup" id="settingsPopup">
+                <div class="setting-row">
+                    <div class="setting-column">Settings</div>
+                    <div class="setting-column close-button-container">
+                        <img src="assets/imgs/room-page/Close Button.png" class="close-button" alt="Close"
+                            onclick="closeSettings()">
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Music</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleMusic()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Sound Effects</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleSoundEffects()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         const form = document.querySelector('form');
         const messagesElement = document.querySelector('.messages');
+        const popupContainer = document.querySelector('.popup-container');
+        const settingsPopup = document.querySelector('#settingsPopup');
 
         const backgroundAudio = new Audio('assets/sounds/lobby-page.mp3');
         backgroundAudio.volume = 0.2;
 
         backgroundAudio.play();
         backgroundAudio.loop = true;
+
+        let musicEnabled = true;
+        let soundEffectsEnabled = true;
 
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -108,6 +145,31 @@
             currentDate.setTime(currentDate.getTime() + 2 * 24 * 60 * 60 * 1000);
             const expires = 'expires=' + currentDate.toUTCString();
             document.cookie = 'omi-token' + '=' + token + ';' + expires + ';path=/';
+        }
+
+        function openSettings() {
+            popupContainer.style.display = 'flex';
+            settingsPopup.style.display = 'flex';
+        }
+
+        function closeSettings() {
+            popupContainer.style.display = 'none';
+            settingsPopup.style.display = 'none';
+        }
+
+        function toggleMusic() {
+            if (musicEnabled) {
+                musicEnabled = false;
+                backgroundAudio.pause();
+            } else {
+                musicEnabled = true;
+                backgroundAudio.currentTime = 0;
+                backgroundAudio.play();
+            }
+        }
+
+        function toggleSoundEffects() {
+            
         }
     </script>
 </body>

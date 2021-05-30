@@ -1,7 +1,18 @@
 const fs = require('fs').promises;
+
 const aboutUsElement = document.querySelector('#aboutUs');
 const advertiseElement = document.querySelector('#advertise');
 const popupContainer = document.querySelector('.popup-container');
+const settingsPopup = document.querySelector('#settingsPopup');
+
+const backgroundAudio = new Audio('assets/sounds/lobby-page.mp3');
+backgroundAudio.volume = 0.2;
+
+backgroundAudio.play();
+backgroundAudio.loop = true;
+
+let musicEnabled = true;
+let soundEffectsEnabled = true;
 
 function openAboutUs() {
     popupContainer.style.display = 'block';
@@ -37,4 +48,29 @@ async function login() {
     } else {
         window.location = 'lobby.html';
     }
+}
+
+function openSettings() {
+    popupContainer.style.display = 'flex';
+    settingsPopup.style.display = 'flex';
+}
+
+function closeSettings() {
+    popupContainer.style.display = 'none';
+    settingsPopup.style.display = 'none';
+}
+
+function toggleMusic() {
+    if (musicEnabled) {
+        musicEnabled = false;
+        backgroundAudio.pause();
+    } else {
+        musicEnabled = true;
+        backgroundAudio.currentTime = 0;
+        backgroundAudio.play();
+    }
+}
+
+function toggleSoundEffects() {
+    
 }

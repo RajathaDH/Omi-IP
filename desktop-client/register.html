@@ -4,11 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/imgs/headerLogo.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
+    <title>Register</title>
 </head>
 <body>
     <div class="main-container">
+        <div class="settings-icon">
+            <img src="assets/imgs/game-page/settings Icon.png" class="settings-icon-img" alt="Settings"
+                onclick="openSettings()">
+        </div>
+
         <div class="login-div">
             <div class="logo-div">
                 <img class="logo" src="assets/imgs/logo.png" alt="Logo">
@@ -29,16 +35,59 @@
             </form>
             <div class="form-footer-text">
                 <a href="login.html">
-                <span class="footer-text">Already have an Account? </span>
+                    <span class="footer-text">Already have an Account? </span>
                 </a>
             </div>
         </div>
         <img class="home-btn" src="assets/imgs/btnHome.png" onclick="window.location='index.html'">
+
+        <div class="popup-container">
+            <div class="popup settings-popup" id="settingsPopup">
+                <div class="setting-row">
+                    <div class="setting-column">Settings</div>
+                    <div class="setting-column close-button-container">
+                        <img src="assets/imgs/room-page/Close Button.png" class="close-button" alt="Close"
+                            onclick="closeSettings()">
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Music</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleMusic()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-column">Sound Effects</div>
+                    <div class="setting-column">
+                        <label class="btn-toggle-container">
+                            <input type="checkbox" checked onchange="toggleSoundEffects()">
+                            <span class="btn-toggle-slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         const form = document.querySelector('form');
         const messagesElement = document.querySelector('.messages');
+        const popupContainer = document.querySelector('.popup-container');
+        const settingsPopup = document.querySelector('#settingsPopup');
+
+        const backgroundAudio = new Audio('assets/sounds/lobby-page.mp3');
+        backgroundAudio.volume = 0.2;
+
+        backgroundAudio.play();
+        backgroundAudio.loop = true;
+
+        let musicEnabled = true;
+        let soundEffectsEnabled = true;
 
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -92,6 +141,31 @@
             } else {
                 messagesElement.innerText = data.message;
             }
+        }
+
+        function openSettings() {
+            popupContainer.style.display = 'flex';
+            settingsPopup.style.display = 'flex';
+        }
+
+        function closeSettings() {
+            popupContainer.style.display = 'none';
+            settingsPopup.style.display = 'none';
+        }
+
+        function toggleMusic() {
+            if (musicEnabled) {
+                musicEnabled = false;
+                backgroundAudio.pause();
+            } else {
+                musicEnabled = true;
+                backgroundAudio.currentTime = 0;
+                backgroundAudio.play();
+            }
+        }
+
+        function toggleSoundEffects() {
+            
         }
     </script>
 </body>
